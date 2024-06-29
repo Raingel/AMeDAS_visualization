@@ -131,11 +131,11 @@ def download_weather_data(unique_sta_id):
         os.makedirs(f'{ROOT}/weather_data/{station_id}', exist_ok=True)
         for year, month in months_to_download:
             path = f'{ROOT}/weather_data/{station_id}/{year}-{month}.csv.gz'
-            if os.path.exists(path):
-                with gzip.open(path, 'rt', encoding="utf8", errors='ignore') as f:
-                    if "ダウンロードした時刻" in f.read():
-                        print(f"Skipping data for {station_id} in {year}-{month}")
-                        continue
+            #if os.path.exists(path):
+            #    with gzip.open(path, 'rt', encoding="utf8", errors='ignore') as f:
+            #        if "ダウンロードした時刻" in f.read():
+                        # print(f"Skipping data for {station_id} in {year}-{month}")
+                        # continue
             print(f"Downloading data for {station_id} in {year}-{month}")
             data = fetch_data_AMeDAS(station_id, year, month, session, sid)
             with gzip.open(path, 'wt', encoding="utf8") as f:
