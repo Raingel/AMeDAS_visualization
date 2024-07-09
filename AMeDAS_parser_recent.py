@@ -110,6 +110,7 @@ def download_weather_data(unique_sta_id):
         "Sec-Fetch-Site": "same-origin",
         "X-Requested-With": "XMLHttpRequest"
     }
+    session.headers.update(headers)
     post_url = "https://www.data.jma.go.jp/risk/obsdl/index.php"
     response = session.get(post_url, headers=headers)
     response.encoding = response.apparent_encoding
@@ -127,20 +128,34 @@ def download_weather_data(unique_sta_id):
         months_to_download.append((previous_year, previous_month))
 
     for index, row in unique_sta_id.iterrows():
+        time.sleep(5)
         station_id = row["局ID"]
         os.makedirs(f'{ROOT}/weather_data/{station_id}', exist_ok=True)
         for year, month in months_to_download:
-            path = f'{ROOT}/weather_data/{station_id}/{year}-{month}.csv.gz'
-            #if os.path.exists(path):
-            #    with gzip.open(path, 'rt', encoding="utf8", errors='ignore') as f:
-            #        if "ダウンロードした時刻" in f.read():
-                        # print(f"Skipping data for {station_id} in {year}-{month}")
-                        # continue
-            print(f"Downloading data for {station_id} in {year}-{month}")
-            data = fetch_data_AMeDAS(station_id, year, month, session, sid)
-            with gzip.open(path, 'wt', encoding="utf8") as f:
-                f.write(data)
-            time.sleep(2)
+            path = f'{ROOT}/weather_data/{station_id}/{year}-{month:02d}.csv.gz'
+            if os.path.exists(path):
+                with gzip.open(path, 'rt', encoding="utf8", errors='ignore') as f:
+                    if "ダウンロードした時刻" in f.read():
+                        print(f"Skipping data for {station_id} in {year}-{month:02d}")
+                        continue
+            print(f"Downloading data for {station_id} in {year}-{month:02d}")
+            retries = 3
+            while retries > 0:
+                try:
+                    data = fetch_data_AMeDAS(station_id, year, month, session, sid)
+                    if "ダウンロードした時刻" in data:
+                        with gzip.open(path, 'wt', encoding="utf8") as f:
+                            f.write(data)
+                        print(f"Successfully downloaded data for {station_id} in {year}-{month:02d}")
+                        break
+                except Exception as e:
+                    print(f"Error downloading data for {station_id} in {year}-{month:02d}: {e}")
+                    retries -= 1
+                    if retries > 0:
+                        print(f"Retrying... ({3 - retries} of 3 retries)")
+                    else:
+                        print(f"Failed to download data for {station_id} in {year}-{month:02d} after 3 retries")
+                time.sleep(10)
 
 # Main execution
 AMeDAS_STA_df = download_amedas_station_list()
