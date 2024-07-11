@@ -124,7 +124,7 @@ def download_weather_data(unique_sta_id):
 
     # Determine if we need to download the previous month's data
     months_to_download = [(current_year, current_month)]
-    if current_date.day <= 3:
+    if current_date.day <= 11:
         months_to_download.append((previous_year, previous_month))
 
     for index, row in unique_sta_id.iterrows():
