@@ -136,8 +136,9 @@ def download_weather_data(unique_sta_id):
             if os.path.exists(path):
                 with gzip.open(path, 'rt', encoding="utf8", errors='ignore') as f:
                     if "ダウンロードした時刻" in f.read():
-                        print(f"Skipping data for {station_id} in {year}-{month}")
-                        continue
+                        #print(f"Skipping data for {station_id} in {year}-{month}")
+                        #continue
+                        1
             print(f"Downloading data for {station_id} in {year}-{month}")
             retries = 3
             while retries > 0:
