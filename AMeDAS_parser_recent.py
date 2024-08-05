@@ -38,7 +38,6 @@ def download_amedas_station_list():
         if file.endswith(".csv"):
             AMeDAS_STA_file = file
             AMeDAS_STA_df = read_csv_with_multiple_encodings("ame_master/" + AMeDAS_STA_file)
-            print(AMeDAS_STA_df.head())
             break
 
     AMeDAS_STA_df["緯度"] = AMeDAS_STA_df.apply(lambda x: to_decimal(x["緯度(度)"], x["緯度(分)"]), axis=1)
@@ -172,6 +171,7 @@ def download_weather_data(unique_sta_id):
 
 # Main execution
 AMeDAS_STA_df = download_amedas_station_list()
+print(AMeDAS_STA_df.head())
 perfecture = get_sta_from_JMA(pd="00")
 perfecture_list = re.findall(r'<div class="prefecture" id="pr(\d+)">(.+?)<input type="hidden" name="prid" value="\d+">', perfecture)
 
@@ -190,6 +190,7 @@ for prid, prname in perfecture_list:
         pool.append([stid, stname, lat, lon])
 
 JMA_STA_df = pd.DataFrame(pool, columns=["局ID", "局名", "緯度", "経度"])
+print(JMA_STA_df.head())
 JMA_STA_df["局名"] = JMA_STA_df["局名"].str.replace(" ", "")
 AMeDAS_STA_df["局名"] = AMeDAS_STA_df["観測所名"].str.replace(" ", "")
 merged = pd.merge(JMA_STA_df, AMeDAS_STA_df, on="局名", how="inner")
