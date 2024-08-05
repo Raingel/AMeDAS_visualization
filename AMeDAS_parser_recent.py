@@ -13,6 +13,17 @@ def to_decimal(d, m):
 
 ROOT = "./"
 
+# Function to try reading the CSV with multiple encodings
+def read_csv_with_multiple_encodings(file_path, encodings=['cp932', 'utf-8', 'shift_jis', 'euc-jp']):
+    for encoding in encodings:
+        try:
+            df = pd.read_csv(file_path, encoding=encoding)
+            print(f"Successfully read the file with encoding: {encoding}")
+            return df
+        except UnicodeDecodeError as e:
+            print(f"Failed to read with encoding {encoding}: {e}")
+    raise ValueError("Failed to read the file with all provided encodings")
+
 # Function to download latest official AMeDAS station list from JMA
 def download_amedas_station_list():
     AMeDAS_STA_list = "https://www.jma.go.jp/jma/kishou/know/amedas/ame_master.zip"
@@ -26,7 +37,7 @@ def download_amedas_station_list():
     for file in os.listdir("ame_master"):
         if file.endswith(".csv"):
             AMeDAS_STA_file = file
-            AMeDAS_STA_df = pd.read_csv("ame_master/" + AMeDAS_STA_file, encoding="cp932")
+            AMeDAS_STA_df = pd.read_csv_with_multiple_encodings("ame_master/" + AMeDAS_STA_file)
             break
 
     AMeDAS_STA_df["緯度"] = AMeDAS_STA_df.apply(lambda x: to_decimal(x["緯度(度)"], x["緯度(分)"]), axis=1)
