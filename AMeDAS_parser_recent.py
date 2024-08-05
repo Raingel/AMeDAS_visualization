@@ -38,6 +38,7 @@ def download_amedas_station_list():
         if file.endswith(".csv"):
             AMeDAS_STA_file = file
             AMeDAS_STA_df = read_csv_with_multiple_encodings("ame_master/" + AMeDAS_STA_file)
+            print(AMeDAS_STA_df.head())
             break
 
     AMeDAS_STA_df["緯度"] = AMeDAS_STA_df.apply(lambda x: to_decimal(x["緯度(度)"], x["緯度(分)"]), axis=1)
