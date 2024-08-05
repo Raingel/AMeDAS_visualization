@@ -190,13 +190,15 @@ for prid, prname in perfecture_list:
         pool.append([stid, stname, lat, lon])
 
 JMA_STA_df = pd.DataFrame(pool, columns=["局ID", "局名", "緯度", "経度"])
-print(JMA_STA_df.head())
 JMA_STA_df["局名"] = JMA_STA_df["局名"].str.replace(" ", "")
 AMeDAS_STA_df["局名"] = AMeDAS_STA_df["観測所名"].str.replace(" ", "")
-merged = pd.merge(JMA_STA_df, AMeDAS_STA_df, on="局名", how="inner")
-merged.to_csv(f"{ROOT}stations/merged_sta_list.csv", index=False)
-
-merged = pd.read_csv(f"{ROOT}stations/merged_sta_list.csv")
-unique_sta_id = merged.drop_duplicates(subset="局ID")
+# %%
+# Concatenate the two DataFrames and drop duplicates
+combined_df = pd.concat([JMA_STA_df, AMeDAS_STA_df], ignore_index=True).drop_duplicates(subset=["局名"])
+#Remove 局ID with NaN
+combined_df = combined_df.dropna(subset=["局ID"]) 
+combined_df.to_csv(f"{ROOT}stations/merged_sta_list.csv", index=False)
+combined_df = pd.read_csv(f"{ROOT}stations/merged_sta_list.csv")
+unique_sta_id = combined_df.drop_duplicates(subset="局ID")
 
 download_weather_data(unique_sta_id)
