@@ -194,7 +194,7 @@ JMA_STA_df["局名"] = JMA_STA_df["局名"].str.replace(" ", "")
 AMeDAS_STA_df["局名"] = AMeDAS_STA_df["観測所名"].str.replace(" ", "")
 # %%
 # Concatenate the two DataFrames and drop duplicates
-combined_df = pd.concat([JMA_STA_df, AMeDAS_STA_df], ignore_index=True).drop_duplicates(subset=["局名"])
+combined_df = pd.concat([AMeDAS_STA_df, JMA_STA_df], ignore_index=True).drop_duplicates(subset=["局名"])
 #Remove 局ID with NaN
 combined_df = combined_df.dropna(subset=["局ID"]) 
 combined_df.to_csv(f"{ROOT}stations/merged_sta_list.csv", index=False)
