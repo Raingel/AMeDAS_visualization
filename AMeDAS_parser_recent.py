@@ -1,3 +1,4 @@
+# %%
 import requests
 import zipfile
 import pandas as pd
@@ -168,7 +169,7 @@ def download_weather_data(unique_sta_id):
                     else:
                         print(f"Failed to download data for {station_id} in {year}-{month} after 3 retries")
                 time.sleep(10)
-
+# %%
 # Main execution
 AMeDAS_STA_df = download_amedas_station_list()
 print(AMeDAS_STA_df.head())
@@ -200,5 +201,5 @@ combined_df = combined_df.dropna(subset=["局ID"])
 combined_df.to_csv(f"{ROOT}stations/merged_sta_list.csv", index=False)
 combined_df = pd.read_csv(f"{ROOT}stations/merged_sta_list.csv")
 unique_sta_id = combined_df.drop_duplicates(subset="局ID")
-
+# %%
 download_weather_data(unique_sta_id)
