@@ -170,35 +170,40 @@ def download_weather_data(unique_sta_id):
                         print(f"Failed to download data for {station_id} in {year}-{month} after 3 retries")
                 time.sleep(10)
 # %%
-# Main execution
-AMeDAS_STA_df = download_amedas_station_list()
-print(AMeDAS_STA_df.head())
-perfecture = get_sta_from_JMA(pd="00")
-perfecture_list = re.findall(r'<div class="prefecture" id="pr(\d+)">(.+?)<input type="hidden" name="prid" value="\d+">', perfecture)
+UPDATE_WEATHER_STA = False
+if UPDATE_WEATHER_STA:
+    # Main execution
+    AMeDAS_STA_df = download_amedas_station_list()
+    print(AMeDAS_STA_df.head())
+    perfecture = get_sta_from_JMA(pd="00")
+    perfecture_list = re.findall(r'<div class="prefecture" id="pr(\d+)">(.+?)<input type="hidden" name="prid" value="\d+">', perfecture)
 
-pool = []
-for prid, prname in perfecture_list:
-    sta_list_response = get_sta_from_JMA(pd=prid)
-    pattern = r'<div style="width:100%; height:100%;" class="station"(.*?)<input type="hidden" name="kansoku"'
-    matches = re.findall(pattern, sta_list_response, re.DOTALL)
-    for m in matches:
-        stname = re.search(r'name="stname" value="(.*?)"', m).group(1)
-        stid = re.search(r'name="stid" value="(.*?)"', m).group(1)
-        lat = re.search(r'緯：(.*?)度(.*?)分', m).groups()
-        lat = to_decimal(float(lat[0]), float(lat[1]))
-        lon = re.search(r'経：(.*?)度(.*?)分', m).groups()
-        lon = to_decimal(float(lon[0]), float(lon[1]))
-        pool.append([stid, stname, lat, lon])
-
-JMA_STA_df = pd.DataFrame(pool, columns=["局ID", "局名", "緯度", "経度"])
-JMA_STA_df["局名"] = JMA_STA_df["局名"].str.replace(" ", "")
-AMeDAS_STA_df["局名"] = AMeDAS_STA_df["観測所名"].str.replace(" ", "")
-# %%
-# Concatenate the two DataFrames and drop duplicates
-combined_df = pd.concat([AMeDAS_STA_df, JMA_STA_df], ignore_index=True).drop_duplicates(subset=["局名"])
-#Remove 局ID with NaN
-combined_df = combined_df.dropna(subset=["局ID"]) 
-combined_df.to_csv(f"{ROOT}stations/merged_sta_list.csv", index=False)
+    pool = []
+    for prid, prname in perfecture_list:
+        sta_list_response = get_sta_from_JMA(pd=prid)
+        pattern = r'<div style="width:100%; height:100%;" class="station"(.*?)<input type="hidden" name="kansoku"'
+        matches = re.findall(pattern, sta_list_response, re.DOTALL)
+        for m in matches:
+            stname = re.search(r'name="stname" value="(.*?)"', m).group(1)
+            stid = re.search(r'name="stid" value="(.*?)"', m).group(1)
+            lat = re.search(r'緯：(.*?)度(.*?)分', m).groups()
+            lat = to_decimal(float(lat[0]), float(lat[1]))
+            lon = re.search(r'経：(.*?)度(.*?)分', m).groups()
+            lon = to_decimal(float(lon[0]), float(lon[1]))
+            pool.append([stid, stname, lat, lon])
+    # %%
+    #AMeDas 有更多氣象站的資料，但JMA_STA_df有我們需要的局ID，所以必須要用合併的方式
+    JMA_STA_df = pd.DataFrame(pool, columns=["局ID", "局名", "緯度", "経度"])
+    JMA_STA_df["局名"] = JMA_STA_df["局名"].str.replace(" ", "")
+    AMeDAS_STA_df["局名"] = AMeDAS_STA_df["観測所名"].str.replace(" ", "")
+    #只保留需要的資訊 緯度:経度:都府県振興局:観測所番号:種類:観測所名:ｶﾀｶﾅ名:
+    AMeDAS_STA_df = AMeDAS_STA_df[['都府県振興局', '観測所番号', '種類', '局名', 'ｶﾀｶﾅ名']]
+    # %%
+    # Merge the two DataFrames 
+    combined_df= pd.merge(JMA_STA_df, AMeDAS_STA_df, how="left", left_on="局名", right_on="局名")
+    #Remove 局ID with NaN
+    combined_df = combined_df.dropna(subset=["局ID"]) 
+    combined_df.to_csv(f"{ROOT}stations/merged_sta_list.csv", index=False)
 combined_df = pd.read_csv(f"{ROOT}stations/merged_sta_list.csv")
 unique_sta_id = combined_df.drop_duplicates(subset="局ID")
 # %%
