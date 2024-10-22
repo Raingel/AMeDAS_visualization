@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>氣象異常地圖</title>
+    <title>AMEDAS平年差地図</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" />
     <style>
         #map {
-            height: 500px;
+            height: 100vh;
             width: 100%;
         }
 
@@ -30,6 +30,19 @@
             background-color: white;
             padding: 10px;
             border-radius: 5px;
+            text-align: center; /* 讓選單置中 */
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%; /* 讓選單置中 */
+        }
+
+        #slider {
+            width: 80%;
+            margin: 0 auto; /* 讓滑桿置中 */
         }
     </style>
 </head>
@@ -42,12 +55,13 @@
 <div id="date_selector">
     <div id="slider"></div>
     <select id="factor" onchange="load_data()" style="margin: 10px;">
-        <option value="平均溫距平">平均溫距平</option>
-        <option value="平均溼度距平">平均溼度距平</option>
-        <option value="日均降水量距平">日均降水量距平</option>
+        <option value="平均溫距平">温度平年差</option>
+        <option value="平均溼度距平">湿度平年差</option>
+        <option value="日均降水量距平">日降水量平年差</option>
     </select>
     <div id="step_value_single"></div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -56,7 +70,7 @@
 <script>
     // 初始化地圖
     const map = L.map('map', {
-        center: [23, 120.5432229],
+        center: [35.4, 139.7],
         zoom: 7
     });
 
@@ -120,7 +134,7 @@
         const factor = document.getElementById("factor").value;
         loading_info(true);
         $.ajax({
-            url: "./anomaly/" + filename,
+            url: "https://raw.githubusercontent.com/Raingel/AMeDAS_visualization/refs/heads/main/anomaly/result/" + filename,
             dataType: "json",
             success: function (data) {
                 if (circles.length > 0) {
@@ -129,17 +143,30 @@
                 }
 
                 data.forEach(point => {
-                    const lat = point['緯度'];
-                    const lon = point['經度'];
+                    const lat = Math.round(point['緯度'] * 100) / 100;
+                    const lon = Math.round(point['經度'] * 100) / 100;
                     const stn_name = point['站名'];
                     const value = Math.round(point[factor] * 100) / 100;
+                    const temp = Math.round(point['本年度平均溫'] * 100) / 100 || "N/A";
+                    const humidity = Math.round(point['本年度日均相對溼度'] * 100) / 100 || "N/A";
+                    const precipitation = Math.round(point['本年度日均降水量'] * 100) / 100 || "N/A";
                     if (value === -99.8) return;
 
-                    const radius = 2500;
+                    const radius = 8500;
                     const color = f_i[factor]["color"].find((_, i) => value <= f_i[factor]["scale"][i]) || 'red';
 
                     const circle = draw_circle(lat, lon, radius, color, 0.7, 1, color, 0.7);
-                    circle.bindPopup(`${stn_name}<br>Lat: ${lat}, Lon: ${lon}<br>${factor}: ${value}`);
+                    circle.bindPopup(`
+                        <div class="popup-content">
+                            <strong>観測所名:</strong> ${stn_name}<br>
+                            <strong>緯度:</strong> ${lat}<br>
+                            <strong>経度:</strong> ${lon}<br>
+                            <strong>${factor}:</strong> ${value}<br>
+                            <strong>今年の平均温度:</strong> ${temp} ℃<br>
+                            <strong>今年の日平均湿度:</strong> ${humidity} %<br>
+                            <strong>今年の日平均降水量:</strong> ${precipitation} mm
+                        </div>
+                    `);
                     circles.push(circle);
                 });
                 loading_info(false);
