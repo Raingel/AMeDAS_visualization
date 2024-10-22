@@ -134,16 +134,17 @@ def calculate_and_save_climatology():
         else:
             print(f"站點 {sta_id} 在氣候基準期間沒有可用的資料。")
 
-# 創建目錄並保存氣候基準值
-os.makedirs('./climatology', exist_ok=True)
-calculate_and_save_climatology()
+
 # %%
 # 定義重建選項
-rebuild = True
+rebuild = False
 
 # 根據 rebuild 選項確定要計算的月份列表
 today = datetime.now()
 if rebuild:
+    # 創建目錄並保存氣候基準值
+    os.makedirs('./climatology', exist_ok=True)
+    calculate_and_save_climatology()
     start_year, start_month = 2010, 1
     end_year, end_month = today.year, today.month
     target_months = [(year, month) for year in range(start_year, end_year + 1)
