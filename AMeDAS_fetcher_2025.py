@@ -194,7 +194,9 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
 
             start_date = datetime(year, month, 1)
             if year == current_year and month == current_month:
-                max_day = min((start_date.replace(day=28) + timedelta(days=4)).day, current_date.day - 1)
+                next_month = start_date.replace(day=28) + timedelta(days=4)
+                last_day = (next_month - timedelta(days=next_month.day)).day
+                max_day = min(last_day, current_date.day - 1)
             else:
                 next_month = start_date.replace(day=28) + timedelta(days=4)
                 max_day = (next_month - timedelta(days=next_month.day)).day
