@@ -99,7 +99,7 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
     previous_year = current_year if current_month > 1 else current_year - 1
     # 若今天尚未滿 3 號，則只下載上個月的資料；否則下載當月資料
     months_to_download = []
-    if current_date.day < 3:
+    if current_date.day < 13:
         months_to_download.append((previous_year, previous_month))
     else:
         months_to_download.append((current_year, current_month))
@@ -156,7 +156,19 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
         "秋田": "32",
         "空知": "15",
         "群馬": "42",
-        "ｵﾎ": "17"
+        "胆振": "21",
+        "ｵﾎ": "17",
+        "釧路": "19",
+        "青森": "31",
+        "茨城": "40",
+        "長野": "48",
+        "静岡": "50",
+        "鳥取": "69",
+        "香川": "72",
+        "高知": "74",
+        "長崎": "84",
+        "鹿児島": "88",
+        "南極": "99"
     }
     
     for idx, row in unique_sta_id.iterrows():
@@ -288,6 +300,7 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
             if output_rows:
                 csv_lines = []
                 csv_lines.append(download_time_str)
+                csv_lines.append("")
                 csv_lines.append("," + ",".join([station_name] * 42))
                 csv_lines.append(header_columns)
                 csv_lines.append(header_extra1)
