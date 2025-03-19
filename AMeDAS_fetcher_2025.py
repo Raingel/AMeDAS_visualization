@@ -1,5 +1,4 @@
 # %%
-# %%
 import requests
 import zipfile
 import pandas as pd
@@ -15,7 +14,7 @@ def to_decimal(d, m):
 
 ROOT = "./"
 
-# ※ 原本下載 AMeDAS 站點清單與合併站點資料的部分保持不變
+# 嘗試用多種編碼讀取 CSV
 def read_csv_with_multiple_encodings(file_path, encodings=['cp932', 'utf-8', 'shift_jis', 'euc-jp']):
     for encoding in encodings:
         try:
@@ -26,6 +25,7 @@ def read_csv_with_multiple_encodings(file_path, encodings=['cp932', 'utf-8', 'sh
             print(f"Failed to read with encoding {encoding}: {e}")
     raise ValueError("Failed to read the file with all provided encodings")
 
+# 下載並解壓 AMeDAS 站點清單，並轉換緯度、經度
 def download_amedas_station_list():
     AMeDAS_STA_list = "https://www.jma.go.jp/jma/kishou/know/amedas/ame_master.zip"
     r = requests.get(AMeDAS_STA_list)
@@ -46,7 +46,7 @@ def download_amedas_station_list():
     AMeDAS_STA_df.to_csv("ame_master/" + AMeDAS_STA_file, index=False)
     return AMeDAS_STA_df
 
-# ※ 原本取得局點資料的函式保持不變
+# 舊版取得局點資料的函式（保留不變）
 def get_sta_from_JMA(pd="00"):
     cookies = {
         'AWSALB': 'osx6uR/c6KwcyMebiovRy3gAW+4aZLfcQPtU+6wJWwUnFm7qGQ3i1GXSVcIjBxrIJzLBkNrBn7CjRX6ixdUNbq1yVKy4/YrUzoF+GdpaoZYGXvHTkpFaB+WhoTB6',
@@ -75,13 +75,7 @@ def get_sta_from_JMA(pd="00"):
     response.encoding = response.apparent_encoding
     return response.text
 
-# -----------------------------------------------------
-# 以下為修改後取得資料的主要函式
-# 改用 pd.read_html 直接讀取網頁中的表格，並將 multi-index 欄位平坦化，
-# 同時：
-# 1. 當下載當月資料時，只下載到昨天（不下載未來日期）的資料
-# 2. 若該月份的 CSV 檔在過去 24 小時內已有更新，則跳過下載
-# -----------------------------------------------------
+# 主要的下載資料函式
 def download_weather_data(unique_sta_id, time_limit_minutes=10):
     start_time = time.time()
     max_time_seconds = time_limit_minutes * 60
@@ -97,7 +91,7 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
     current_month = current_date.month
     previous_month = current_month - 1 if current_month > 1 else 12
     previous_year = current_year if current_month > 1 else current_year - 1
-    # 若今天尚未滿 3 號，則只下載上個月的資料；否則下載當月資料
+    # 若今天尚未滿 13 號，則只下載上個月的資料；否則下載當月資料
     months_to_download = []
     if current_date.day < 13:
         months_to_download.append((previous_year, previous_month))
@@ -208,7 +202,8 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
                         first_line = f.readline().strip()
                     if first_line.startswith("ダウンロードした時刻："):
                         prev_dt = datetime.strptime(first_line[len("ダウンロードした時刻："):], "%Y/%m/%d %H:%M:%S")
-                        if (datetime.now() - prev_dt).total_seconds() < 24 * 3600:
+                        # 資料若在過去 24 小時內更新則跳過
+                        if (datetime.now() - prev_dt).total_seconds() < 0 * 3600:
                             print(f"站點 {station_id} {year}-{month} 的資料在過去 24 小時內已更新，跳過下載。")
                             continue
                 except Exception as e:
@@ -226,53 +221,77 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
                 print(f"下載站點 {station_id} {year}-{month}-{day} 的資料，使用 prec_no {prec_no}，url: {url}")
                 try:
                     df_day = pd.read_html(url)[0]
+                    
+                    # 扁平化多層索引的欄位名稱
                     new_columns = []
                     for col in df_day.columns:
                         if isinstance(col, tuple):
-                            colname = col[1] if (len(col) > 1 and col[1] and pd.notna(col[1])) else col[0]
+                            # 若 tuple 有第二個值且不為空，則取第二個值，否則取第一個
+                            if len(col) > 1 and col[1] and pd.notnull(col[1]):
+                                colname = col[1]
+                            else:
+                                colname = col[0]
                         else:
                             colname = col
                         new_columns.append(str(colname).replace("\n", "").strip())
                     df_day.columns = new_columns
                     
-                    rename_map = {
-                        "時": "hour",
-                        "現地": "pressure_local",
-                        "海面": "pressure_sea",
-                        "降水量 (mm)": "precipitation",
-                        "気温 (℃)": "temperature",
-                        "湿度 (％)": "humidity",
-                        "風速": "wind_speed",
-                        "風向": "wind_direction",
-                        "日照 時間 (h)": "sunshine",
-                        "全天 日射量 (MJ/㎡)": "solar",
-                        "雪(cm)": "snow_depth",
-                        "天気": "weather",
-                        "雲量": "cloud",
-                        "視程 (km)": "visibility"
-                    }
+                    # 判斷是否為新格式（檢查是否包含「風速・風向」字樣）
+                    if any("平均風速" in col for col in df_day.columns):
+                        # 新格式的欄位對應設定
+                        rename_map = {
+                            "時": "hour",
+                            "降水量 (mm)": "precipitation",
+                            "気温 (℃)": "temperature",
+                            "湿度 (％)": "humidity",
+                            "平均風速 (m/s)": "wind_speed",
+                            "風向": "wind_direction",
+                            "日照 時間 (h)": "sunshine",
+                            "降雪 (cm)": "snowfall",
+                            "積雪 (cm)": "snow_depth"
+                        }
+                    else:
+                        # 舊格式的欄位對應設定
+                        rename_map = {
+                            "時": "hour",
+                            "現地": "pressure_local",
+                            "海面": "pressure_sea",
+                            "降水量 (mm)": "precipitation",
+                            "気温 (℃)": "temperature",
+                            "湿度 (％)": "humidity",
+                            "風速": "wind_speed",
+                            "風向": "wind_direction",
+                            "日照 時間 (h)": "sunshine",
+                            "全天 日射量 (MJ/㎡)": "solar",
+                            "雪": "snow_depth",  # 注意舊格式中「雪」可能包含降雪與積雪，需要依狀況處理
+                            "天気": "weather",
+                            "雲量": "cloud",
+                            "視程 (km)": "visibility"
+                        }
                     df_day.rename(columns=rename_map, inplace=True)
-                    
+                    print(df_day)
+                    # 逐行處理並組出 42 欄資料（每個觀測值後接品質資訊與均質號碼）
                     for i, r in df_day.iterrows():
                         try:
                             hour_val = int(r["hour"])
                         except Exception:
                             continue
                         timestamp = f"{year}/{month}/{day} {hour_val}:00:00"
-                        temperature = r.get("temperature", "")
-                        precipitation = r.get("precipitation", "")
-                        solar = r.get("solar", "")
-                        weather = r.get("weather", "")
-                        visibility = r.get("visibility", "")
-                        cloud = r.get("cloud", "")
+                        
+                        temperature    = r.get("temperature", "")
+                        precipitation  = r.get("precipitation", "")
+                        solar          = r.get("solar", "")
+                        weather        = r.get("weather", "")
+                        visibility     = r.get("visibility", "")
+                        cloud          = r.get("cloud", "")
                         pressure_local = r.get("pressure_local", "")
-                        pressure_sea = r.get("pressure_sea", "")
-                        humidity = r.get("humidity", "")
-                        wind_speed = r.get("wind_speed", "")
+                        pressure_sea   = r.get("pressure_sea", "")
+                        humidity       = r.get("humidity", "")
+                        wind_speed     = r.get("wind_speed", "")
                         wind_direction = r.get("wind_direction", "")
-                        sunshine = r.get("sunshine", "")
-                        snow_depth = r.get("snow_depth", "")
-                        snowfall = ""  # 新來源沒有降雪欄位
+                        sunshine       = r.get("sunshine", "")
+                        snow_depth     = r.get("snow_depth", "")
+                        snowfall       = r.get("snowfall", "")
                         
                         row_out = [
                             timestamp,
@@ -293,12 +312,13 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
                         if len(row_out) != 42:
                             print("Row length mismatch:", len(row_out))
                         output_rows.append(row_out)
+                    print(output_rows)
                     time.sleep(1)
                 except Exception as e:
                     print(f"處理站點 {station_id} {year}-{month}-{day} 時發生錯誤：{e}")
                     continue
             
-            # 若已有下載到資料，則寫入 CSV（gzip 壓縮）
+            # 若有資料則輸出為 CSV（gzip 壓縮），並確保與舊版格式相符
             if output_rows:
                 csv_lines = []
                 csv_lines.append(download_time_str)
@@ -324,11 +344,12 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
             print("因執行時間超過設定，停止下載後續站點。")
             break
 
-
 # %%
-# 讀取合併後的站點清單，並對局ID 去除重複後下載資料
+# 讀取合併後的站點清單，對局ID 去除重複後下載資料
 combined_df = pd.read_csv(f"{ROOT}stations/merged_sta_list.csv")
 unique_sta_id = combined_df.drop_duplicates(subset="局ID")
+#先只做a0002
+#unique_sta_id = unique_sta_id[unique_sta_id["局ID"] == "a0002"]
 download_weather_data(unique_sta_id, time_limit_minutes=300)
 
-
+# %%
