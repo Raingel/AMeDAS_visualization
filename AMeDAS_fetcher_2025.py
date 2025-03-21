@@ -203,7 +203,7 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
                     if first_line.startswith("ダウンロードした時刻："):
                         prev_dt = datetime.strptime(first_line[len("ダウンロードした時刻："):], "%Y/%m/%d %H:%M:%S")
                         # 資料若在過去 24 小時內更新則跳過
-                        if (datetime.now() - prev_dt).total_seconds() < 24 * 3600:
+                        if (datetime.now() - prev_dt).total_seconds() < 0 * 3600:
                             print(f"站點 {station_id} {year}-{month} 的資料在過去 24 小時內已更新，跳過下載。")
                             continue
                 except Exception as e:
