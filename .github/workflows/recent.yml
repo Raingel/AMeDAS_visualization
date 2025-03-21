@@ -2,7 +2,7 @@ name: recent_update
 
 on:
   schedule:
-    - cron: "0 17 * * *"
+    - cron: "0 0,8,16 * * *"
   workflow_dispatch:
 jobs:
   build:
