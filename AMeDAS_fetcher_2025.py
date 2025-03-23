@@ -66,10 +66,11 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
     current_month = current_date.month
     previous_month = current_month - 1 if current_month > 1 else 12
     previous_year = current_year if current_month > 1 else current_year - 1
-    # 若今天尚未滿 25 號，則只下載上個月的資料；否則下載當月資料
+    # 若今天尚未滿 3 號，則也下載上個月的資料；否則下載當月資料
     months_to_download = []
-    if current_date.day < 25:
+    if current_date.day < 3:
         months_to_download.append((previous_year, previous_month))
+        months_to_download.append((current_year, current_month))
     else:
         months_to_download.append((current_year, current_month))
         # 如有需要，也可考慮同時下載上個月
@@ -252,6 +253,6 @@ def download_weather_data(unique_sta_id, time_limit_minutes=10):
 # 讀取合併後的站點清單，對局ID 去除重複後下載資料
 combined_df = pd.read_csv(f"{ROOT}stations/weather_stations.csv")
 unique_sta_id = combined_df.drop_duplicates(subset="局ID")
-download_weather_data(unique_sta_id, time_limit_minutes=3000)
+download_weather_data(unique_sta_id, time_limit_minutes=300)
 
 # %%
