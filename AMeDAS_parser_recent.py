@@ -203,8 +203,8 @@ if UPDATE_WEATHER_STA:
     combined_df= pd.merge(JMA_STA_df, AMeDAS_STA_df, how="left", left_on="局名", right_on="局名")
     #Remove 局ID with NaN
     combined_df = combined_df.dropna(subset=["局ID"]) 
-    combined_df.to_csv(f"{ROOT}stations/merged_sta_list.csv", index=False)
-combined_df = pd.read_csv(f"{ROOT}stations/merged_sta_list.csv")
+    combined_df.to_csv(f"{ROOT}stations/weather_stations.csv", index=False)
+combined_df = pd.read_csv(f"{ROOT}stations/weather_stations.csv")
 unique_sta_id = combined_df.drop_duplicates(subset="局ID")
 # %%
 download_weather_data(unique_sta_id)
