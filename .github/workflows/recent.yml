@@ -19,7 +19,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: exec AMeDAS_parser
       run: |
-        python AMeDAS_fetcher_2025.py
+        python AMeDAS_parser_recent.py
     - name: Commit files
       continue-on-error: true
       run: |
