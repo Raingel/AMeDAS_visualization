@@ -12,7 +12,8 @@ from datetime import datetime, timedelta
 # 設定 日誌 紀錄
 logging.basicConfig(
     level=logging.INFO,
-    format='%(Y-%m-%d %H:%M:%S) %(levelname)s: %(message)s'
+    format='%(asctime)s %(levelname)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
 
