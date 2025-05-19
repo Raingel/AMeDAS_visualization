@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import requests
 import zipfile
 import pandas as pd
@@ -22,6 +21,7 @@ ROOT = "./"
 def to_decimal(d, m):
     return d + m / 60
 
+
 def read_csv_with_multiple_encodings(file_path, encodings=['cp932','utf-8','shift_jis','euc-jp']):
     for encoding in encodings:
         try:
@@ -31,6 +31,7 @@ def read_csv_with_multiple_encodings(file_path, encodings=['cp932','utf-8','shif
         except UnicodeDecodeError as e:
             logger.warning(f"使用 編碼 {encoding} 讀取 失敗：{e}")
     raise ValueError("無法 使用 提供 之 編碼 讀取 檔案")
+
 
 def download_amedas_station_list():
     url = "https://www.jma.go.jp/jma/kishou/know/amedas/ame_master.zip"
@@ -42,11 +43,12 @@ def download_amedas_station_list():
         z.extractall("ame_master")
     csv_file = next(f for f in os.listdir("ame_master") if f.endswith(".csv"))
     amedas_df = read_csv_with_multiple_encodings(os.path.join("ame_master", csv_file))
-    amedas_df["緯度"] = amedas_df.apply(lambda x: to_decimal(x["緯度(度)"],x["緯度(分)"]),axis=1)
-    amedas_df["経度"] = amedas_df.apply(lambda x: to_decimal(x["経度(度)"],x["経度(分)"]),axis=1)
-    amedas_df.to_csv(os.path.join("ame_master",csv_file), index=False)
+    amedas_df["緯度"] = amedas_df.apply(lambda x: to_decimal(x["緯度(度)"],x["緯度(分)" ]),axis=1)
+    amedas_df["経度"] = amedas_df.apply(lambda x: to_decimal(x["経度(度)"],x["経度(分)" ]),axis=1)
+    amedas_df.to_csv(os.path.join("ame_master", csv_file), index=False)
     logger.info("AMeDAS 站點 列表 處理 完成")
     return amedas_df
+
 
 def get_sta_from_JMA(pd="00"):
     cookies = {
@@ -79,6 +81,7 @@ def get_sta_from_JMA(pd="00"):
     response.encoding = response.apparent_encoding
     return response.text
 
+
 def fetch_data_AMeDAS(station_id, year, month, session, sid):
     max_day = (pd.Timestamp(year, month,1)+pd.DateOffset(months=1)-pd.DateOffset(days=1)).day
     data = {
@@ -108,6 +111,7 @@ def fetch_data_AMeDAS(station_id, year, month, session, sid):
     response.encoding = response.apparent_encoding
     return response.text
 
+
 def download_weather_data(unique_sta_id):
     start_time = datetime.now()
     time_limit = timedelta(hours=5, minutes=40)
@@ -122,9 +126,6 @@ def download_weather_data(unique_sta_id):
         "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
         "Origin":"https://www.data.jma.go.jp",
         "Referer":"https://www.data.jma.go.jp/risk/obsdl/index.php",
-        "Sec-Ch-Ua":'"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
-        "Sec-Ch-Ua-Mobile":"?0",
-        "Sec-Ch-Ua-Platform":"Windows",
         "Sec-Fetch-Dest":"empty",
         "Sec-Fetch-Mode":"cors",
         "Sec-Fetch-Site":"same-origin",
@@ -162,7 +163,6 @@ def download_weather_data(unique_sta_id):
         os.makedirs(folder, exist_ok=True)
 
         for year, month in months_to_download:
-            check_time = datetime.now()
             path = os.path.join(folder, f"{year}-{month:02d}.csv.gz")
 
             if os.path.exists(path):
@@ -172,13 +172,14 @@ def download_weather_data(unique_sta_id):
                 m = re.search(r"ダウンロードした時刻：(\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2})", content)
                 if m:
                     dl_time = datetime.strptime(m.group(1), "%Y/%m/%d %H:%M:%S")
-                    if check_time - dl_time < timedelta(hours=24):
+                    if datetime.now() - dl_time < timedelta(hours=24):
                         logger.info(f"{station_id} {year}-{month:02d} 在 24 小時 內 已 更新，跳過")
                         continue
                     else:
                         logger.info(f"{station_id} {year}-{month:02d} 超過 24 小時，重新 下載")
                 else:
                     logger.info(f"{station_id} {year}-{month:02d} 無 更新 時刻，重新 下載")
+
             else:
                 logger.info(f"{station_id} {year}-{month:02d} 無 檔案，開始 下載")
 
@@ -193,11 +194,22 @@ def download_weather_data(unique_sta_id):
                         logger.info(f"{station_id} {year}-{month:02d} 下載 成功")
                         break
                     else:
-                        logger.warning(f"{station_id} {year}-{month:02d} 下載 內容 無 更新 標記")
+                        retries -= 1
+                        logger.warning(
+                            f"{station_id} {year}-{month:02d} 無 更新 標記，剩餘重試 {retries} 次，前三行如下："
+                        )
+                        lines = html.splitlines()[:3]
+                        for ln in lines:
+                            logger.warning(ln)
                 except Exception as e:
                     retries -= 1
-                    logger.error(f"{station_id} {year}-{month:02d} 下載 失敗：{e}，剩餘 重試 {retries}")
+                    logger.error(
+                        f"{station_id} {year}-{month:02d} 下載 失敗：{e}，剩餘重試 {retries} 次"
+                    )
                 time.sleep(10)
+
+            if retries == 0:
+                logger.error(f"{station_id} {year}-{month:02d} 已達 重試 上限，跳過。")
 
 if __name__ == "__main__":
     UPDATE_WEATHER_STA = False
