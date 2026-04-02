@@ -7,16 +7,38 @@ import time
 import gzip
 import logging
 from datetime import datetime, timedelta
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 # 設定 日誌 紀錄
+LOG_LEVEL = os.getenv("AMEDAS_LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
-    level=logging.INFO,
+    level=getattr(logging, LOG_LEVEL, logging.INFO),
     format='%(asctime)s %(levelname)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
 
 ROOT = "./"
+
+
+def build_session():
+    session = requests.Session()
+    # 避免環境中的代理設定造成連線被拒絕，導致整批更新中斷
+    session.trust_env = False
+    session.headers.update({"User-Agent": "Mozilla/5.0", "X-Requested-With": "XMLHttpRequest"})
+    retries = Retry(
+        total=3,
+        connect=3,
+        read=3,
+        backoff_factor=2,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET", "POST"],
+    )
+    adapter = HTTPAdapter(max_retries=retries)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 def to_decimal(d, m):
     return d + m / 60
@@ -54,7 +76,12 @@ def fetch_data_AMeDAS(station_id, year, month, session, sid):
         'ymdLiteral':'1',
         'PHPSESSID':sid,
     }
-    resp = session.post('https://www.data.jma.go.jp/risk/obsdl/show/table', data=payload)
+    try:
+        resp = session.post('https://www.data.jma.go.jp/risk/obsdl/show/table', data=payload, timeout=60)
+    except requests.RequestException as e:
+        logger.error(f"{station_id} {year}-{month} POST 失敗：{e}")
+        return ""
+    logger.debug(f"{station_id} {year}-{month} POST 狀態碼: {resp.status_code}, bytes={len(resp.content)}")
     raw = resp.content
     try:
         text = raw.decode('cp932')
@@ -72,14 +99,19 @@ def fetch_data_AMeDAS(station_id, year, month, session, sid):
 def download_weather_data(unique_sta_id):
     start_time = datetime.now()
     time_limit = timedelta(hours=5, minutes=40)
-    session = requests.Session()
-    session.headers.update({"User-Agent":"Mozilla/5.0","X-Requested-With":"XMLHttpRequest"})
+    session = build_session()
 
     logger.info("取得 JMA 首頁 以 獲取 sid")
-    landing = session.get('https://www.data.jma.go.jp/risk/obsdl/index.php')
+    try:
+        landing = session.get('https://www.data.jma.go.jp/risk/obsdl/index.php', timeout=30)
+    except requests.RequestException as e:
+        logger.error(f"連線 JMA 首頁 失敗：{e}")
+        return
+    logger.debug(f"JMA 首頁狀態碼: {landing.status_code}, 長度: {len(landing.text)}")
     match = re.search(r'id="sid" value="(.*?)"', landing.text)
     if not match:
         logger.error("未 能 取得 sid")
+        logger.error(f"首頁前 300 字元: {landing.text[:300]}")
         return
     sid = match.group(1)
     logger.info(f"sid: {sid}")
@@ -98,6 +130,7 @@ def download_weather_data(unique_sta_id):
 
         for y, m in months:
             path = os.path.join(folder, f"{y}-{m}.csv.gz")
+            logger.info(f"[{station}] 檢查 {y}-{m}，目標檔案: {path}")
             need_download = True
             if os.path.exists(path):
                 logger.info(f"找到 {path}")
@@ -117,6 +150,8 @@ def download_weather_data(unique_sta_id):
                         logger.info(f"{station} {y}-{m} 超過24H，重新下載")
                 else:
                     logger.info(f"{station} {y}-{m} 無更新時間，重新下載")
+            else:
+                logger.info(f"{station} {y}-{m} 尚無本地檔案，將下載")
 
             if not need_download:
                 continue
@@ -133,7 +168,7 @@ def download_weather_data(unique_sta_id):
                 else:
                     retries -= 1
                     preview = text.splitlines()[:3]
-                    logger.warning(f"{station} {y}-{m} 無更新 標記，剩 {retries} 次，前三行: {preview}")
+                    logger.warning(f"{station} {y}-{m} 無更新 標記，剩 {retries} 次，回應前 3 行: {preview}")
                     time.sleep(10)
             if retries == 0:
                 logger.error(f"{station} {y}-{m} 重試失敗，跳過")
