@@ -26,7 +26,12 @@ def build_session():
     session = requests.Session()
     # 避免環境中的代理設定造成連線被拒絕，導致整批更新中斷
     session.trust_env = False
-    session.headers.update({"User-Agent": "Mozilla/5.0", "X-Requested-With": "XMLHttpRequest"})
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0",
+        "X-Requested-With": "XMLHttpRequest",
+        "Origin": "https://www.data.jma.go.jp",
+        "Referer": "https://www.data.jma.go.jp/risk/obsdl/",
+    })
     retries = Retry(
         total=3,
         connect=3,
@@ -95,16 +100,17 @@ def fetch_data_AMeDAS(station_id, year, month, session, sid):
     payload = {
         'stationNumList': f'["{station_id}"]',
         'aggrgPeriod':'9',
-        'elementNumList':'[["201",""],["101",""],["610",""],["703",""],["704",""],["607",""],["601",""],["602",""],["605",""],["301",""],["401",""],["501",""],["503",""]]',
-        'interAnnualFlag':'1',
+        # 依照 JMA 現行下載表單欄位調整
+        'elementNumList':'[["201",""],["101",""],["503",""],["401",""],["501",""],["301",""],["612",""],["604",""],["605",""],["602",""],["601",""],["610",""],["703",""],["607",""],["704",""]]',
+        'interAnnualType':'1',
         'ymdList':f'["{year}","{year}","{month}","{month}","1","{max_day}"]',
+        'optionNumList':'[]',
         'downloadFlag':'true',
         'rmkFlag':'1',
         'disconnectFlag':'1',
         'youbiFlag':'0',
         'fukenFlag':'0',
         'kijiFlag':'0',
-        'huukouFlag':'0',
         'csvFlag':'1',
         'jikantaiFlag':'0',
         'jikantaiList':'[1,24]',
