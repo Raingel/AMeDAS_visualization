@@ -1,108 +1,92 @@
-2026-04-02 12:49:47 INFO: 取得 JMA 首頁 以 獲取 sid / ci_session
-2026-04-02 12:49:47 DEBUG: Starting new HTTPS connection (1): www.data.jma.go.jp:443
-2026-04-02 12:49:48 DEBUG: https://www.data.jma.go.jp:443 "GET /risk/obsdl/ HTTP/1.1" 200 None
-2026-04-02 12:49:48 DEBUG: JMA 首頁狀態碼: 200, 長度: 15859
-2026-04-02 12:49:48 INFO: 首頁 cookies: {'AWSALB': 'XGtMusW42boaa+oJjCPpmcLSnlFlruNmWYMv+sA8w93ztDW6ldYrWMhv6yH5xjRPuO6j32FAiGbvztdqqZCkzK0uEU+1LtWO9aJIqHzwU40cSVgywJ7MEwkN/bMc', 'AWSALBCORS': 'XGtMusW42boaa+oJjCPpmcLSnlFlruNmWYMv+sA8w93ztDW6ldYrWMhv6yH5xjRPuO6j32FAiGbvztdqqZCkzK0uEU+1LtWO9aJIqHzwU40cSVgywJ7MEwkN/bMc', 'ci_session': '4cf576d4446753ae6b6495c3745d4b6f'}
-2026-04-02 12:49:48 INFO: sid 來源: not_found
-2026-04-02 12:49:48 WARNING: 未取得 sid，將改用 session cookie/無 sid 模式嘗試下載
-2026-04-02 12:49:48 WARNING: 目前 cookies: {'AWSALB': 'XGtMusW42boaa+oJjCPpmcLSnlFlruNmWYMv+sA8w93ztDW6ldYrWMhv6yH5xjRPuO6j32FAiGbvztdqqZCkzK0uEU+1LtWO9aJIqHzwU40cSVgywJ7MEwkN/bMc', 'AWSALBCORS': 'XGtMusW42boaa+oJjCPpmcLSnlFlruNmWYMv+sA8w93ztDW6ldYrWMhv6yH5xjRPuO6j32FAiGbvztdqqZCkzK0uEU+1LtWO9aJIqHzwU40cSVgywJ7MEwkN/bMc', 'ci_session': '4cf576d4446753ae6b6495c3745d4b6f'}
-2026-04-02 12:49:48 ERROR: 首頁前 300 字元: <!DOCTYPE html>
+2026-04-02 14:28:09 INFO: 取得 JMA 首頁 以 獲取 sid / ci_session
+2026-04-02 14:28:09 DEBUG: Starting new HTTPS connection (1): www.data.jma.go.jp:443
+2026-04-02 14:28:09 DEBUG: https://www.data.jma.go.jp:443 "GET /risk/obsdl/ HTTP/1.1" 200 None
+2026-04-02 14:28:09 DEBUG: JMA 首頁狀態碼: 200, 長度: 15859
+2026-04-02 14:28:09 INFO: 首頁 cookies: {'AWSALB': 'OUCPVWT+tfHN+9hI0tPConQuQXB7grY9mmVn7/4uxlshtLWoXqDgspFzCf8GUJac4HqFNr6tkRFM7NKE6IM8jKEA9TZcSVw3KKJNEULHh/I3NdP78InYfAYIQF6s', 'AWSALBCORS': 'OUCPVWT+tfHN+9hI0tPConQuQXB7grY9mmVn7/4uxlshtLWoXqDgspFzCf8GUJac4HqFNr6tkRFM7NKE6IM8jKEA9TZcSVw3KKJNEULHh/I3NdP78InYfAYIQF6s', 'ci_session': '79681b09de685e5bb490334a66cc7028'}
+2026-04-02 14:28:09 INFO: sid 來源: not_found
+2026-04-02 14:28:09 WARNING: 未取得 sid，將改用 session cookie/無 sid 模式嘗試下載
+2026-04-02 14:28:09 WARNING: 目前 cookies: {'AWSALB': 'OUCPVWT+tfHN+9hI0tPConQuQXB7grY9mmVn7/4uxlshtLWoXqDgspFzCf8GUJac4HqFNr6tkRFM7NKE6IM8jKEA9TZcSVw3KKJNEULHh/I3NdP78InYfAYIQF6s', 'AWSALBCORS': 'OUCPVWT+tfHN+9hI0tPConQuQXB7grY9mmVn7/4uxlshtLWoXqDgspFzCf8GUJac4HqFNr6tkRFM7NKE6IM8jKEA9TZcSVw3KKJNEULHh/I3NdP78InYfAYIQF6s', 'ci_session': '79681b09de685e5bb490334a66cc7028'}
+2026-04-02 14:28:09 ERROR: 首頁前 300 字元: <!DOCTYPE html>
 <html xml:lang="ja" lang="ja">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <title>気象庁|過去の気象データ・ダウンロード</title>
         <meta name="Author" content="気象庁 Japan M
-2026-04-02 12:49:48 WARNING: DEBUG 抽樣模式啟用：本次僅處理 4 個站點 -> ['a1051', 'a1054', 'a1203', 's47584']
-2026-04-02 12:49:48 INFO: [a1051] 檢查 2026-4，目標檔案: ./weather_data/a1051/2026-4.csv.gz
-2026-04-02 12:49:48 INFO: a1051 2026-4 尚無本地檔案，將下載
-2026-04-02 12:49:48 INFO: 開始下載 a1051 2026-4
-2026-04-02 12:49:48 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:49:48 DEBUG: a1051 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:49:48 DEBUG: a1051 解碼: utf-8
-2026-04-02 12:49:48 WARNING: a1051 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:49:59 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:49:59 DEBUG: a1051 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:49:59 DEBUG: a1051 解碼: utf-8
-2026-04-02 12:49:59 WARNING: a1051 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:50:09 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:50:09 DEBUG: a1051 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:50:09 DEBUG: a1051 解碼: utf-8
-2026-04-02 12:50:09 WARNING: a1051 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:50:19 ERROR: a1051 2026-4 重試失敗，跳過
-2026-04-02 12:50:19 INFO: [a1051] 檢查 2026-3，目標檔案: ./weather_data/a1051/2026-3.csv.gz
-2026-04-02 12:50:19 INFO: a1051 2026-3 尚無本地檔案，將下載
-2026-04-02 12:50:19 INFO: 開始下載 a1051 2026-3
-2026-04-02 12:50:21 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:50:21 DEBUG: a1051 2026-3 POST 狀態碼: 200, bytes=94209
-2026-04-02 12:50:21 DEBUG: a1051 解碼: cp932
-2026-04-02 12:50:21 INFO: a1051 2026-3 下載 成功
-2026-04-02 12:50:21 INFO: [a1054] 檢查 2026-4，目標檔案: ./weather_data/a1054/2026-4.csv.gz
-2026-04-02 12:50:21 INFO: a1054 2026-4 尚無本地檔案，將下載
-2026-04-02 12:50:21 INFO: 開始下載 a1054 2026-4
-2026-04-02 12:50:21 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:50:21 DEBUG: a1054 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:50:21 DEBUG: a1054 解碼: utf-8
-2026-04-02 12:50:21 WARNING: a1054 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:50:32 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:50:32 DEBUG: a1054 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:50:32 DEBUG: a1054 解碼: utf-8
-2026-04-02 12:50:32 WARNING: a1054 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:50:43 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:50:43 DEBUG: a1054 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:50:43 DEBUG: a1054 解碼: utf-8
-2026-04-02 12:50:43 WARNING: a1054 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:50:53 ERROR: a1054 2026-4 重試失敗，跳過
-2026-04-02 12:50:53 INFO: [a1054] 檢查 2026-3，目標檔案: ./weather_data/a1054/2026-3.csv.gz
-2026-04-02 12:50:53 INFO: a1054 2026-3 尚無本地檔案，將下載
-2026-04-02 12:50:53 INFO: 開始下載 a1054 2026-3
-2026-04-02 12:50:54 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:50:54 DEBUG: a1054 2026-3 POST 狀態碼: 200, bytes=93480
-2026-04-02 12:50:54 DEBUG: a1054 解碼: cp932
-2026-04-02 12:50:54 INFO: a1054 2026-3 下載 成功
-2026-04-02 12:50:54 INFO: [a1203] 檢查 2026-4，目標檔案: ./weather_data/a1203/2026-4.csv.gz
-2026-04-02 12:50:54 INFO: a1203 2026-4 尚無本地檔案，將下載
-2026-04-02 12:50:54 INFO: 開始下載 a1203 2026-4
-2026-04-02 12:50:55 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:50:55 DEBUG: a1203 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:50:55 DEBUG: a1203 解碼: utf-8
-2026-04-02 12:50:55 WARNING: a1203 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:51:05 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:51:05 DEBUG: a1203 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:51:05 DEBUG: a1203 解碼: utf-8
-2026-04-02 12:51:05 WARNING: a1203 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:51:16 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:51:16 DEBUG: a1203 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:51:16 DEBUG: a1203 解碼: utf-8
-2026-04-02 12:51:16 WARNING: a1203 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:51:26 ERROR: a1203 2026-4 重試失敗，跳過
-2026-04-02 12:51:26 INFO: [a1203] 檢查 2026-3，目標檔案: ./weather_data/a1203/2026-3.csv.gz
-2026-04-02 12:51:26 INFO: a1203 2026-3 尚無本地檔案，將下載
-2026-04-02 12:51:26 INFO: 開始下載 a1203 2026-3
-2026-04-02 12:51:27 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:51:27 DEBUG: a1203 2026-3 POST 狀態碼: 200, bytes=93692
-2026-04-02 12:51:27 DEBUG: a1203 解碼: cp932
-2026-04-02 12:51:27 INFO: a1203 2026-3 下載 成功
-2026-04-02 12:51:27 INFO: [s47584] 檢查 2026-4，目標檔案: ./weather_data/s47584/2026-4.csv.gz
-2026-04-02 12:51:27 INFO: s47584 2026-4 尚無本地檔案，將下載
-2026-04-02 12:51:27 INFO: 開始下載 s47584 2026-4
-2026-04-02 12:51:28 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:51:28 DEBUG: s47584 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:51:28 DEBUG: s47584 解碼: utf-8
-2026-04-02 12:51:28 WARNING: s47584 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:51:39 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:51:39 DEBUG: s47584 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:51:39 DEBUG: s47584 解碼: utf-8
-2026-04-02 12:51:39 WARNING: s47584 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:51:50 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:51:50 DEBUG: s47584 2026-4 POST 狀態碼: 200, bytes=4550
-2026-04-02 12:51:50 DEBUG: s47584 解碼: utf-8
-2026-04-02 12:51:50 WARNING: s47584 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
-2026-04-02 12:52:00 ERROR: s47584 2026-4 重試失敗，跳過
-2026-04-02 12:52:00 INFO: [s47584] 檢查 2026-3，目標檔案: ./weather_data/s47584/2026-3.csv.gz
-2026-04-02 12:52:00 INFO: s47584 2026-3 尚無本地檔案，將下載
-2026-04-02 12:52:00 INFO: 開始下載 s47584 2026-3
-2026-04-02 12:52:01 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 12:52:01 DEBUG: s47584 2026-3 POST 狀態碼: 200, bytes=112412
-2026-04-02 12:52:01 DEBUG: s47584 解碼: cp932
-2026-04-02 12:52:01 INFO: s47584 2026-3 下載 成功
+2026-04-02 14:28:09 WARNING: DEBUG 抽樣模式啟用：本次僅處理 4 個站點 -> ['a1051', 'a1054', 'a1203', 's47584']
+2026-04-02 14:28:09 INFO: [a1051] 檢查 2026-4，目標檔案: ./weather_data/a1051/2026-4.csv.gz
+2026-04-02 14:28:09 INFO: a1051 2026-4 尚無本地檔案，將下載
+2026-04-02 14:28:09 INFO: 開始下載 a1051 2026-4
+2026-04-02 14:28:10 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:28:10 DEBUG: a1051 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:28:10 DEBUG: a1051 解碼: utf-8
+2026-04-02 14:28:10 WARNING: a1051 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:28:20 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:28:20 DEBUG: a1051 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:28:20 DEBUG: a1051 解碼: utf-8
+2026-04-02 14:28:20 WARNING: a1051 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:28:31 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:28:31 DEBUG: a1051 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:28:31 DEBUG: a1051 解碼: utf-8
+2026-04-02 14:28:31 WARNING: a1051 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:28:41 ERROR: a1051 2026-4 重試失敗，跳過
+2026-04-02 14:28:41 INFO: [a1051] 檢查 2026-3，目標檔案: ./weather_data/a1051/2026-3.csv.gz
+2026-04-02 14:28:41 INFO: 找到 ./weather_data/a1051/2026-3.csv.gz
+2026-04-02 14:28:41 INFO: a1051 2026-3 24H 內已更新，跳過
+2026-04-02 14:28:41 INFO: [a1054] 檢查 2026-4，目標檔案: ./weather_data/a1054/2026-4.csv.gz
+2026-04-02 14:28:41 INFO: a1054 2026-4 尚無本地檔案，將下載
+2026-04-02 14:28:41 INFO: 開始下載 a1054 2026-4
+2026-04-02 14:28:41 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:28:41 DEBUG: a1054 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:28:41 DEBUG: a1054 解碼: utf-8
+2026-04-02 14:28:41 WARNING: a1054 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:28:52 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:28:52 DEBUG: a1054 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:28:52 DEBUG: a1054 解碼: utf-8
+2026-04-02 14:28:52 WARNING: a1054 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:29:02 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:29:02 DEBUG: a1054 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:29:02 DEBUG: a1054 解碼: utf-8
+2026-04-02 14:29:02 WARNING: a1054 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:29:12 ERROR: a1054 2026-4 重試失敗，跳過
+2026-04-02 14:29:12 INFO: [a1054] 檢查 2026-3，目標檔案: ./weather_data/a1054/2026-3.csv.gz
+2026-04-02 14:29:12 INFO: 找到 ./weather_data/a1054/2026-3.csv.gz
+2026-04-02 14:29:12 INFO: a1054 2026-3 24H 內已更新，跳過
+2026-04-02 14:29:12 INFO: [a1203] 檢查 2026-4，目標檔案: ./weather_data/a1203/2026-4.csv.gz
+2026-04-02 14:29:12 INFO: a1203 2026-4 尚無本地檔案，將下載
+2026-04-02 14:29:12 INFO: 開始下載 a1203 2026-4
+2026-04-02 14:29:13 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:29:13 DEBUG: a1203 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:29:13 DEBUG: a1203 解碼: utf-8
+2026-04-02 14:29:13 WARNING: a1203 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:29:23 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:29:23 DEBUG: a1203 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:29:23 DEBUG: a1203 解碼: utf-8
+2026-04-02 14:29:23 WARNING: a1203 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:29:34 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:29:34 DEBUG: a1203 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:29:34 DEBUG: a1203 解碼: utf-8
+2026-04-02 14:29:34 WARNING: a1203 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:29:44 ERROR: a1203 2026-4 重試失敗，跳過
+2026-04-02 14:29:44 INFO: [a1203] 檢查 2026-3，目標檔案: ./weather_data/a1203/2026-3.csv.gz
+2026-04-02 14:29:44 INFO: 找到 ./weather_data/a1203/2026-3.csv.gz
+2026-04-02 14:29:44 INFO: a1203 2026-3 24H 內已更新，跳過
+2026-04-02 14:29:44 INFO: [s47584] 檢查 2026-4，目標檔案: ./weather_data/s47584/2026-4.csv.gz
+2026-04-02 14:29:44 INFO: s47584 2026-4 尚無本地檔案，將下載
+2026-04-02 14:29:44 INFO: 開始下載 s47584 2026-4
+2026-04-02 14:29:44 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:29:44 DEBUG: s47584 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:29:44 DEBUG: s47584 解碼: utf-8
+2026-04-02 14:29:44 WARNING: s47584 2026-4 無更新 標記，剩 2 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:29:55 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:29:55 DEBUG: s47584 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:29:55 DEBUG: s47584 解碼: utf-8
+2026-04-02 14:29:55 WARNING: s47584 2026-4 無更新 標記，剩 1 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:30:05 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
+2026-04-02 14:30:05 DEBUG: s47584 2026-4 POST 狀態碼: 200, bytes=4550
+2026-04-02 14:30:05 DEBUG: s47584 解碼: utf-8
+2026-04-02 14:30:05 WARNING: s47584 2026-4 無更新 標記，剩 0 次，回應前 3 行: ['<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">', '    <head>']
+2026-04-02 14:30:15 ERROR: s47584 2026-4 重試失敗，跳過
+2026-04-02 14:30:15 INFO: [s47584] 檢查 2026-3，目標檔案: ./weather_data/s47584/2026-3.csv.gz
+2026-04-02 14:30:15 INFO: 找到 ./weather_data/s47584/2026-3.csv.gz
+2026-04-02 14:30:15 INFO: s47584 2026-3 24H 內已更新，跳過
