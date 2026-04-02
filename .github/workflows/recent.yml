@@ -4,9 +4,22 @@ on:
   schedule:
     - cron: "0 0,8,16 * * *"
   workflow_dispatch:
+    inputs:
+      log_level:
+        description: "AMeDAS log level"
+        required: false
+        default: "DEBUG"
+        type: choice
+        options:
+          - DEBUG
+          - INFO
+          - WARNING
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: "1"
+      AMEDAS_LOG_LEVEL: ${{ github.event.inputs.log_level || 'DEBUG' }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.10
@@ -19,7 +32,13 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: exec AMeDAS_parser
       run: |
-        python AMeDAS_parser_recent.py
+        python AMeDAS_parser_recent.py 2>&1 | tee amedas_recent.log
+    - name: Upload debug log
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: amedas-recent-log
+        path: amedas_recent.log
     - name: Commit files
       continue-on-error: true
       run: |
@@ -27,7 +46,7 @@ jobs:
         git config --global user.name "Raingel(Github Action)"
         git add .
         git commit -m "`date '+%Y-%m-%d %H:%M:%S'`"
-        git pull
+        git pull --rebase
     - name: Push changes
       continue-on-error: true
       uses: ad-m/github-push-action@master
