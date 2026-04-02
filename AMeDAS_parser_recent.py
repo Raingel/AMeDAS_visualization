@@ -130,14 +130,14 @@ def download_amedas_station_list():
     return amedas_df
 
 
-def fetch_data_AMeDAS(station_id, year, month, end_day, session, sid):
+def fetch_data_AMeDAS(start_year, start_month, end_year, end_month, end_day, station_id_for_log, session, sid):
     payload = {
-        'stationNumList': f'["{station_id}"]',
+        'stationNumList': f'["{station_id_for_log}"]',
         'aggrgPeriod':'9',
         # 依照 JMA 現行下載表單欄位調整
         'elementNumList':'[["201",""],["101",""],["503",""],["401",""],["501",""],["301",""],["612",""],["604",""],["605",""],["602",""],["601",""],["610",""],["703",""],["607",""],["704",""]]',
         'interAnnualType':'1',
-        'ymdList':f'["{year}","{year}","{month}","{month}","1","{end_day}"]',
+        'ymdList':f'["{start_year}","{end_year}","{start_month}","{end_month}","1","{end_day}"]',
         'optionNumList':'[]',
         'downloadFlag':'true',
         'rmkFlag':'1',
@@ -155,22 +155,22 @@ def fetch_data_AMeDAS(station_id, year, month, end_day, session, sid):
     try:
         resp = session.post('https://www.data.jma.go.jp/risk/obsdl/show/table', data=payload, timeout=60)
     except requests.RequestException as e:
-        logger.error(f"{station_id} {year}-{month} POST 失敗：{e}")
+        logger.error(f"{station_id_for_log} {end_year}-{end_month} POST 失敗：{e}")
         return ""
-    logger.debug(f"{station_id} {year}-{month} POST 狀態碼: {resp.status_code}, bytes={len(resp.content)}")
+    logger.debug(f"{station_id_for_log} {end_year}-{end_month} POST 狀態碼: {resp.status_code}, bytes={len(resp.content)}")
     raw = resp.content
     try:
         text = raw.decode('cp932')
-        logger.debug(f"{station_id} 解碼: cp932")
+        logger.debug(f"{station_id_for_log} 解碼: cp932")
     except UnicodeDecodeError:
         try:
             text = raw.decode('utf-8')
-            logger.debug(f"{station_id} 解碼: utf-8")
+            logger.debug(f"{station_id_for_log} 解碼: utf-8")
         except Exception:
             text = raw.decode('cp932', errors='ignore')
-            logger.warning(f"{station_id} 強制 cp932 解碼 (忽略錯誤)")
+            logger.warning(f"{station_id_for_log} 強制 cp932 解碼 (忽略錯誤)")
     if "ダウンロードした時刻" not in text:
-        dump_http_trace(station_id, year, month, payload, text)
+        dump_http_trace(station_id_for_log, end_year, end_month, payload, text)
     return text
 
 
@@ -214,6 +214,12 @@ def download_weather_data(unique_sta_id):
             now = datetime.now()
             end_day = min(max_day := (pd.Timestamp(y, m, 1) + pd.DateOffset(months=1) - pd.DateOffset(days=1)).day,
                           now.day if (y == now.year and m == now.month) else max_day)
+            if y == now.year and m == now.month:
+                prev_month_dt = (datetime(y, m, 1) - timedelta(days=1))
+                start_year, start_month = prev_month_dt.year, prev_month_dt.month
+                end_day = max(1, now.day - 1)
+            else:
+                start_year, start_month = y, m
             path = os.path.join(folder, f"{y}-{m}.csv.gz")
             logger.info(f"[{station}] 檢查 {y}-{m}，目標檔案: {path}")
             need_download = True
@@ -242,9 +248,10 @@ def download_weather_data(unique_sta_id):
                 continue
 
             logger.info(f"開始下載 {station} {y}-{m}")
+            logger.info(f"{station} 查詢區間: {start_year}/{start_month}/1 -> {y}/{m}/{end_day}")
             retries = 3
             while retries > 0:
-                text = fetch_data_AMeDAS(station, y, m, end_day, session, sid)
+                text = fetch_data_AMeDAS(start_year, start_month, y, m, end_day, station, session, sid)
                 if "ダウンロードした時刻" in text:
                     with gzip.open(path, 'wt', encoding='cp932') as fw:
                         fw.write(text)
