@@ -20,6 +20,11 @@ jobs:
     env:
       PYTHONUNBUFFERED: "1"
       AMEDAS_LOG_LEVEL: ${{ github.event.inputs.log_level || 'DEBUG' }}
+      AMEDAS_SAMPLE_ONLY: "1"
+      AMEDAS_SAMPLE_STATIONS: "a1051,a1054,a1203,s47584"
+      AMEDAS_SAMPLE_LIMIT: "4"
+      AMEDAS_SAVE_HTTP_DUMP: "1"
+      AMEDAS_HTTP_DUMP_DIR: "debug_http"
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.10
@@ -39,6 +44,12 @@ jobs:
       with:
         name: amedas-recent-log
         path: amedas_recent.log
+    - name: Upload HTTP traces
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: amedas-recent-http-dump
+        path: debug_http
     - name: Commit files
       continue-on-error: true
       run: |

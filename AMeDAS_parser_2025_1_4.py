@@ -22,6 +22,41 @@ logger = logging.getLogger(__name__)
 ROOT = "./"
 
 
+def load_station_sampling_config():
+    sample_only = os.getenv("AMEDAS_SAMPLE_ONLY", "0") == "1"
+    sample_stations = [s.strip() for s in os.getenv("AMEDAS_SAMPLE_STATIONS", "").split(",") if s.strip()]
+    sample_limit = int(os.getenv("AMEDAS_SAMPLE_LIMIT", "5"))
+    return sample_only, sample_stations, sample_limit
+
+
+def filter_stations_for_debug(unique_sta_id):
+    sample_only, sample_stations, sample_limit = load_station_sampling_config()
+    if not sample_only:
+        return unique_sta_id
+    df = unique_sta_id.copy()
+    if sample_stations:
+        df = df[df["局ID"].isin(sample_stations)]
+    if sample_limit > 0:
+        df = df.head(sample_limit)
+    logger.warning(f"DEBUG 抽樣模式啟用：本次僅處理 {len(df)} 個站點 -> {df['局ID'].tolist()}")
+    return df
+
+
+def dump_http_trace(station_id, year, month, payload, text):
+    if os.getenv("AMEDAS_SAVE_HTTP_DUMP", "0") != "1":
+        return
+    dump_dir = os.getenv("AMEDAS_HTTP_DUMP_DIR", "debug_http")
+    os.makedirs(dump_dir, exist_ok=True)
+    base = f"{station_id}_{year}_{month}"
+    payload_path = os.path.join(dump_dir, f"{base}_payload.txt")
+    response_path = os.path.join(dump_dir, f"{base}_response_head.txt")
+    with open(payload_path, "w", encoding="utf-8") as f:
+        for k, v in payload.items():
+            f.write(f"{k}={v}\n")
+    with open(response_path, "w", encoding="utf-8") as f:
+        f.write(text[:4000])
+
+
 def build_session():
     session = requests.Session()
     # 避免環境中的代理設定造成連線被拒絕，導致整批更新中斷
@@ -78,15 +113,14 @@ def read_csv_with_multiple_encodings(file_path, encodings=['cp932','utf-8','shif
     raise ValueError("無法 使用 提供 之 編碼 讀取 檔案")
 
 
-def fetch_data_AMeDAS(station_id, year, month, session, sid):
-    max_day = (pd.Timestamp(year, month, 1) + pd.DateOffset(months=1) - pd.DateOffset(days=1)).day
+def fetch_data_AMeDAS(station_id, year, month, end_day, session, sid):
     payload = {
         'stationNumList': f'["{station_id}"]',
         'aggrgPeriod':'9',
         # 依照 JMA 現行下載表單欄位調整
         'elementNumList':'[["201",""],["101",""],["503",""],["401",""],["501",""],["301",""],["612",""],["604",""],["605",""],["602",""],["601",""],["610",""],["703",""],["607",""],["704",""]]',
         'interAnnualType':'1',
-        'ymdList':f'["{year}","{year}","{month}","{month}","1","{max_day}"]',
+        'ymdList':f'["{year}","{year}","{month}","{month}","1","{end_day}"]',
         'optionNumList':'[]',
         'downloadFlag':'true',
         'rmkFlag':'1',
@@ -118,6 +152,8 @@ def fetch_data_AMeDAS(station_id, year, month, session, sid):
         except Exception:
             text = raw.decode('cp932', errors='ignore')
             logger.warning(f"{station_id} 強制 cp932 解碼 (忽略錯誤)")
+    if "ダウンロードした時刻" not in text:
+        dump_http_trace(station_id, year, month, payload, text)
     return text
 
 
@@ -126,13 +162,14 @@ def download_weather_data(unique_sta_id):
     time_limit = timedelta(hours=5, minutes=40)
     session = build_session()
 
-    logger.info("取得 JMA 首頁 以 獲取 sid")
+    logger.info("取得 JMA 首頁 以 獲取 sid / ci_session")
     try:
-        landing = session.get('https://www.data.jma.go.jp/risk/obsdl/index.php', timeout=30)
+        landing = session.get('https://www.data.jma.go.jp/risk/obsdl/', timeout=30)
     except requests.RequestException as e:
         logger.error(f"連線 JMA 首頁 失敗：{e}")
         return
     logger.debug(f"JMA 首頁狀態碼: {landing.status_code}, 長度: {len(landing.text)}")
+    logger.info(f"首頁 cookies: {session.cookies.get_dict()}")
     sid, sid_source = extract_sid(landing.text, session)
     logger.info(f"sid 來源: {sid_source}")
     if sid:
@@ -146,7 +183,7 @@ def download_weather_data(unique_sta_id):
     year = datetime.now().year
     months = [(year, m) for m in range(1, 5)]
 
-    for _, row in unique_sta_id.iterrows():
+    for _, row in filter_stations_for_debug(unique_sta_id).iterrows():
         if datetime.now() - start_time > time_limit:
             logger.info("時間到，結束下載")
             return
@@ -155,6 +192,9 @@ def download_weather_data(unique_sta_id):
         os.makedirs(folder, exist_ok=True)
 
         for y, m in months:
+            now = datetime.now()
+            end_day = min(max_day := (pd.Timestamp(y, m, 1) + pd.DateOffset(months=1) - pd.DateOffset(days=1)).day,
+                          now.day if (y == now.year and m == now.month) else max_day)
             path = os.path.join(folder, f"{y}-{m}.csv.gz")
             logger.info(f"[{station}] 檢查 {y}-{m}，目標檔案: {path}")
             need_download = True
@@ -185,7 +225,7 @@ def download_weather_data(unique_sta_id):
             logger.info(f"開始下載 {station} {y}-{m}")
             retries = 3
             while retries > 0:
-                text = fetch_data_AMeDAS(station, y, m, session, sid)
+                text = fetch_data_AMeDAS(station, y, m, end_day, session, sid)
                 if "ダウンロードした時刻" in text:
                     with gzip.open(path, 'wt', encoding='cp932') as fw:
                         fw.write(text)
