@@ -57,6 +57,15 @@ def dump_http_trace(station_id, year, month, payload, text):
         f.write(text[:4000])
 
 
+def is_probable_no_data_html(text):
+    if not text:
+        return False
+    if "<!DOCTYPE html" not in text:
+        return False
+    keywords = ["該当", "データがありません", "条件", "見つかりません", "存在しません"]
+    return any(k in text for k in keywords) or len(text) < 7000
+
+
 def build_session():
     session = requests.Session()
     # 避免環境中的代理設定造成連線被拒絕，導致整批更新中斷
@@ -237,6 +246,9 @@ def download_weather_data(unique_sta_id):
                     with gzip.open(path, 'wt', encoding='cp932') as fw:
                         fw.write(text)
                     logger.info(f"{station} {y}-{m} 下載 成功")
+                    break
+                if is_probable_no_data_html(text):
+                    logger.info(f"{station} {y}-{m} 目前可能尚無可下載資料，跳過本次重試")
                     break
                 else:
                     retries -= 1
