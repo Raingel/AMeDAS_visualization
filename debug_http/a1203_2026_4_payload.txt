@@ -1,0 +1,16 @@
+stationNumList=["a1203"]
+aggrgPeriod=9
+elementNumList=[["201",""],["101",""],["503",""],["401",""],["501",""],["301",""],["612",""],["604",""],["605",""],["602",""],["601",""],["610",""],["703",""],["607",""],["704",""]]
+interAnnualType=1
+ymdList=["2026","2026","4","4","1","2"]
+optionNumList=[]
+downloadFlag=true
+rmkFlag=1
+disconnectFlag=1
+youbiFlag=0
+fukenFlag=0
+kijiFlag=0
+csvFlag=1
+jikantaiFlag=0
+jikantaiList=[1,24]
+ymdLiteral=1
