@@ -1,0 +1,12 @@
+2026-04-02 11:12:59 INFO: 取得 JMA 首頁 以 獲取 sid
+2026-04-02 11:12:59 DEBUG: Starting new HTTPS connection (1): www.data.jma.go.jp:443
+2026-04-02 11:13:00 DEBUG: https://www.data.jma.go.jp:443 "GET /risk/obsdl/index.php HTTP/1.1" 200 None
+2026-04-02 11:13:00 DEBUG: JMA 首頁狀態碼: 200, 長度: 15859
+2026-04-02 11:13:00 ERROR: 未 能 取得 sid
+2026-04-02 11:13:00 ERROR: 首頁前 300 字元: <!DOCTYPE html>
+<html xml:lang="ja" lang="ja">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+        <title>気象庁|過去の気象データ・ダウンロード</title>
+        <meta name="Author" content="気象庁 Japan M
