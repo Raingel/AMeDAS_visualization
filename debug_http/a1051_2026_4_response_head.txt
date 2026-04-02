@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+        <title>気象庁|過去の気象データ・ダウンロード</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="Author" content="気象庁 Japan Meteorological Agency" />
+        <meta name="keywords" content="気象庁 Japan Meteorological Agency" />
+        <meta name="description" content="気象庁が提供するページです" />
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta http-equiv="Content-Script-Type" content="text/javascript" />
+        <link rel="stylesheet" type="text/css" href="/com/css/define.css" media="all" />
+        <style type="text/css" media="all"><!-- @import url(/com/default.css); --></style>
+        <script type="text/javascript">
+            /*@cc_on _d=document;
+             eval('var document=_d');
+             @*/
+        </script>
+        <style>
+            <!--
+            .tblnarabi td{
+                padding:0;
+                white-space:nowrap;
+            }
+            -->
+        </style>
+        <link href="https://www.data.jma.go.jp/risk/obsdl/web/css/top.2.0.css" rel="stylesheet" type="text/css">    </head>
+    <body>
+        <div id="main-area">
+            <div id="header_area">
+	<div id="nheader">
+		<div id="logo"><a href="//www.jma.go.jp/jma/index.html"><img src="//www.jma.go.jp/jma/com/images/logo.gif" alt="気象庁" width="120" height="67" /></a></div>
+
+                <div id="header2_right">
+                    <div id="header2_link">
+                        <ul>
+                        <li xml:lang="en" lang="en"><a href="//www.jma.go.jp/jma/indexe.html">ENGLISH</a></li>
+                        </ul>
+                    </div>
+                    <!-- search -->　
+                    <div id="gsearch">
+                        <form id="cse-search-box" action="//google.com/cse">
+                        <input type="hidden" name="cx" value="009950868052057056798:0yrbmp7chwi" />
+                        <input type="hidden" name="ie" value="UTF-8" />
+                        <input type="text" name="q" />
+                        <input type="image" name="sa" src="/jma/com/images/btn_search6.png" alt="検索"/>
+                        </form>
+                    <script type="text/javascript" src="//www.google.com/cse/brand?form=cse-search-box&lang=ja"></script>
+                    </div>
+                    <!-- search end -->
+                </div>
+                
+		<ul id="gnavi">
+			<li><a href="//www.jma.go.jp/">ホーム</a></li>
+			<li><a href="//www.jma.go.jp/jma/menu/menuflash.html">防災情報</a></li>
+			<li><a href="//www.jma.go.jp/jma/menu/menureport.html" class="on">各種データ・資料</a></li>
+                        <li><a href="//www.jma.go.jp/jma/menu/areas.html">地域の情報</a></li>
+                        <li><a href="//www.jma.go.jp/jma/menu/menuknowledge.html">知識・解説</a></li>
+                        <li><a href="//www.jma.go.jp/jma/menu/menuappli.html">各種申請・ご案内</a></li>
+		</ul>
+	</div>
+</div>
+<!--header end -->            <div id="contents_area2">
+                         <div id="ncontents2">
+        <!-- pankuzu menu -->
+    <div class="clearfix">
+    <ul class="breadcrumb2">
+        <li><a href="//www.jma.go.jp/">ホーム</a>&nbsp;&gt;&nbsp;</li>
+        <li><a href="//www.jma.go.jp/jma/menu/menureport.html">各種データ・資料</a>&nbsp;&gt;&nbsp;</li>
+        <li>過去の気象データ・ダウンロード</li>
+    </ul>
+    </div>
+<script type="text/javascript">
+<!--
+function TigilError() {
+	return true;
+}
+window.onerror = TigilError;
+window.localStorage.setItem('errFlag', "1");
+-->
+</script>
+<ul class="pagelink">
+    <li><a href="https://www.data.jma.go.jp/risk/obsdl/">メニューページに戻る</a></li>
+</ul>
+<p>　メニューページに戻り、もう一度やり直してください。</p>
+ </div>
+            </div>
+         
