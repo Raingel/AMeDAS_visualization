@@ -40,6 +40,24 @@ def build_session():
     session.mount("http://", adapter)
     return session
 
+
+def extract_sid(landing_text, session):
+    patterns = [
+        r'id="sid"\s+value="([^"]+)"',
+        r'name="sid"\s+value="([^"]+)"',
+        r"var\s+sid\s*=\s*'([^']+)'",
+        r'var\s+sid\s*=\s*"([^"]+)"',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, landing_text)
+        if match:
+            return match.group(1), f"html:{pattern}"
+
+    cookie_sid = session.cookies.get("PHPSESSID")
+    if cookie_sid:
+        return cookie_sid, "cookie:PHPSESSID"
+    return None, "not_found"
+
 def to_decimal(d, m):
     return d + m / 60
 
@@ -91,8 +109,9 @@ def fetch_data_AMeDAS(station_id, year, month, session, sid):
         'jikantaiFlag':'0',
         'jikantaiList':'[1,24]',
         'ymdLiteral':'1',
-        'PHPSESSID':sid,
     }
+    if sid:
+        payload['PHPSESSID'] = sid
     try:
         resp = session.post('https://www.data.jma.go.jp/risk/obsdl/show/table', data=payload, timeout=60)
     except requests.RequestException as e:
@@ -125,13 +144,14 @@ def download_weather_data(unique_sta_id):
         logger.error(f"連線 JMA 首頁 失敗：{e}")
         return
     logger.debug(f"JMA 首頁狀態碼: {landing.status_code}, 長度: {len(landing.text)}")
-    match = re.search(r'id="sid" value="(.*?)"', landing.text)
-    if not match:
-        logger.error("未 能 取得 sid")
+    sid, sid_source = extract_sid(landing.text, session)
+    logger.info(f"sid 來源: {sid_source}")
+    if sid:
+        logger.info(f"sid: {sid}")
+    else:
+        logger.warning("未取得 sid，將改用 session cookie/無 sid 模式嘗試下載")
+        logger.warning(f"目前 cookies: {session.cookies.get_dict()}")
         logger.error(f"首頁前 300 字元: {landing.text[:300]}")
-        return
-    sid = match.group(1)
-    logger.info(f"sid: {sid}")
 
     now = datetime.now()
     months = [(now.year, now.month)]
