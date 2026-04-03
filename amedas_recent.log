@@ -1,40 +1,40 @@
-2026-04-03 08:25:18 INFO: 取得 JMA 首頁 以 獲取 sid / ci_session
-2026-04-03 08:25:18 DEBUG: Starting new HTTPS connection (1): www.data.jma.go.jp:443
-2026-04-03 08:25:18 DEBUG: https://www.data.jma.go.jp:443 "GET /risk/obsdl/ HTTP/1.1" 200 None
-2026-04-03 08:25:18 DEBUG: JMA 首頁狀態碼: 200, 長度: 15859
-2026-04-03 08:25:18 INFO: 首頁 cookies: {'AWSALB': '3cFUI6oN9KTaNhhA20xrldepehnIu5KIYglDOZHAocgjKtGyXWjYwaJEI+jtNfZyR1c1ryiU56QYS6Nh5RGGUwZBHIkB5bkkh6fv2k8HfmdXw+xPNAr3ToEq3jvP', 'AWSALBCORS': '3cFUI6oN9KTaNhhA20xrldepehnIu5KIYglDOZHAocgjKtGyXWjYwaJEI+jtNfZyR1c1ryiU56QYS6Nh5RGGUwZBHIkB5bkkh6fv2k8HfmdXw+xPNAr3ToEq3jvP', 'ci_session': '54da8a3dd55faec8b21153fb190b23ab'}
-2026-04-03 08:25:18 INFO: sid 來源: not_found
-2026-04-03 08:25:18 WARNING: 未取得 sid，將改用 session cookie/無 sid 模式嘗試下載
-2026-04-03 08:25:18 WARNING: 目前 cookies: {'AWSALB': '3cFUI6oN9KTaNhhA20xrldepehnIu5KIYglDOZHAocgjKtGyXWjYwaJEI+jtNfZyR1c1ryiU56QYS6Nh5RGGUwZBHIkB5bkkh6fv2k8HfmdXw+xPNAr3ToEq3jvP', 'AWSALBCORS': '3cFUI6oN9KTaNhhA20xrldepehnIu5KIYglDOZHAocgjKtGyXWjYwaJEI+jtNfZyR1c1ryiU56QYS6Nh5RGGUwZBHIkB5bkkh6fv2k8HfmdXw+xPNAr3ToEq3jvP', 'ci_session': '54da8a3dd55faec8b21153fb190b23ab'}
-2026-04-03 08:25:18 ERROR: 首頁前 300 字元: <!DOCTYPE html>
+2026-04-03 16:18:05 INFO: 取得 JMA 首頁 以 獲取 sid / ci_session
+2026-04-03 16:18:05 DEBUG: Starting new HTTPS connection (1): www.data.jma.go.jp:443
+2026-04-03 16:18:06 DEBUG: https://www.data.jma.go.jp:443 "GET /risk/obsdl/ HTTP/1.1" 200 None
+2026-04-03 16:18:06 DEBUG: JMA 首頁狀態碼: 200, 長度: 15859
+2026-04-03 16:18:06 INFO: 首頁 cookies: {'AWSALB': 'XxYnj7J8h6++nSYuyVqOa20JbUh8BOSL2KV0xaCi6bgcf/qpqKVnAVjwkmZBsUbLP8mIn1v5AV5LVRXIAyRFveUVK48ifAcydglT/W7Ue9XZcxcU3T0us2/UjUxT', 'AWSALBCORS': 'XxYnj7J8h6++nSYuyVqOa20JbUh8BOSL2KV0xaCi6bgcf/qpqKVnAVjwkmZBsUbLP8mIn1v5AV5LVRXIAyRFveUVK48ifAcydglT/W7Ue9XZcxcU3T0us2/UjUxT', 'ci_session': 'd68c7671e07a7b3bc059ca28f2d7afad'}
+2026-04-03 16:18:06 INFO: sid 來源: not_found
+2026-04-03 16:18:06 WARNING: 未取得 sid，將改用 session cookie/無 sid 模式嘗試下載
+2026-04-03 16:18:06 WARNING: 目前 cookies: {'AWSALB': 'XxYnj7J8h6++nSYuyVqOa20JbUh8BOSL2KV0xaCi6bgcf/qpqKVnAVjwkmZBsUbLP8mIn1v5AV5LVRXIAyRFveUVK48ifAcydglT/W7Ue9XZcxcU3T0us2/UjUxT', 'AWSALBCORS': 'XxYnj7J8h6++nSYuyVqOa20JbUh8BOSL2KV0xaCi6bgcf/qpqKVnAVjwkmZBsUbLP8mIn1v5AV5LVRXIAyRFveUVK48ifAcydglT/W7Ue9XZcxcU3T0us2/UjUxT', 'ci_session': 'd68c7671e07a7b3bc059ca28f2d7afad'}
+2026-04-03 16:18:06 ERROR: 首頁前 300 字元: <!DOCTYPE html>
 <html xml:lang="ja" lang="ja">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <title>気象庁|過去の気象データ・ダウンロード</title>
         <meta name="Author" content="気象庁 Japan M
-2026-04-03 08:25:18 WARNING: DEBUG 抽樣模式啟用：本次僅處理 4 個站點 -> ['a1051', 'a1054', 'a1203', 's47584']
-2026-04-03 08:25:18 INFO: [a1051] 檢查 2026-4，目標檔案: ./weather_data/a1051/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/a1051/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: a1051 2026-4 24H 內已更新，跳過
-2026-04-03 08:25:18 INFO: [a1051] 檢查 2026-3，目標檔案: ./weather_data/a1051/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/a1051/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: a1051 2026-3 24H 內已更新，跳過
-2026-04-03 08:25:18 INFO: [a1054] 檢查 2026-4，目標檔案: ./weather_data/a1054/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/a1054/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: a1054 2026-4 24H 內已更新，跳過
-2026-04-03 08:25:18 INFO: [a1054] 檢查 2026-3，目標檔案: ./weather_data/a1054/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/a1054/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: a1054 2026-3 24H 內已更新，跳過
-2026-04-03 08:25:18 INFO: [a1203] 檢查 2026-4，目標檔案: ./weather_data/a1203/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/a1203/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: a1203 2026-4 24H 內已更新，跳過
-2026-04-03 08:25:18 INFO: [a1203] 檢查 2026-3，目標檔案: ./weather_data/a1203/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/a1203/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: a1203 2026-3 24H 內已更新，跳過
-2026-04-03 08:25:18 INFO: [s47584] 檢查 2026-4，目標檔案: ./weather_data/s47584/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/s47584/2026-4.csv.gz
-2026-04-03 08:25:18 INFO: s47584 2026-4 24H 內已更新，跳過
-2026-04-03 08:25:18 INFO: [s47584] 檢查 2026-3，目標檔案: ./weather_data/s47584/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: 找到 ./weather_data/s47584/2026-3.csv.gz
-2026-04-03 08:25:18 INFO: s47584 2026-3 24H 內已更新，跳過
+2026-04-03 16:18:06 WARNING: DEBUG 抽樣模式啟用：本次僅處理 4 個站點 -> ['a1051', 'a1054', 'a1203', 's47584']
+2026-04-03 16:18:06 INFO: [a1051] 檢查 2026-4，目標檔案: ./weather_data/a1051/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/a1051/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: a1051 2026-4 24H 內已更新，跳過
+2026-04-03 16:18:06 INFO: [a1051] 檢查 2026-3，目標檔案: ./weather_data/a1051/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/a1051/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: a1051 2026-3 24H 內已更新，跳過
+2026-04-03 16:18:06 INFO: [a1054] 檢查 2026-4，目標檔案: ./weather_data/a1054/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/a1054/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: a1054 2026-4 24H 內已更新，跳過
+2026-04-03 16:18:06 INFO: [a1054] 檢查 2026-3，目標檔案: ./weather_data/a1054/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/a1054/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: a1054 2026-3 24H 內已更新，跳過
+2026-04-03 16:18:06 INFO: [a1203] 檢查 2026-4，目標檔案: ./weather_data/a1203/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/a1203/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: a1203 2026-4 24H 內已更新，跳過
+2026-04-03 16:18:06 INFO: [a1203] 檢查 2026-3，目標檔案: ./weather_data/a1203/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/a1203/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: a1203 2026-3 24H 內已更新，跳過
+2026-04-03 16:18:06 INFO: [s47584] 檢查 2026-4，目標檔案: ./weather_data/s47584/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/s47584/2026-4.csv.gz
+2026-04-03 16:18:06 INFO: s47584 2026-4 24H 內已更新，跳過
+2026-04-03 16:18:06 INFO: [s47584] 檢查 2026-3，目標檔案: ./weather_data/s47584/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: 找到 ./weather_data/s47584/2026-3.csv.gz
+2026-04-03 16:18:06 INFO: s47584 2026-3 24H 內已更新，跳過
