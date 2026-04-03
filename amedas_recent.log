@@ -1,60 +1,40 @@
-2026-04-02 16:27:01 INFO: 取得 JMA 首頁 以 獲取 sid / ci_session
-2026-04-02 16:27:01 DEBUG: Starting new HTTPS connection (1): www.data.jma.go.jp:443
-2026-04-02 16:27:01 DEBUG: https://www.data.jma.go.jp:443 "GET /risk/obsdl/ HTTP/1.1" 200 None
-2026-04-02 16:27:01 DEBUG: JMA 首頁狀態碼: 200, 長度: 15859
-2026-04-02 16:27:01 INFO: 首頁 cookies: {'AWSALB': 'VoYjBMv+U++p2jdo7XIC2oElP33QWBp8UaO+RydS5LApyPCqSGbhTcfFwXMqH7tP+em/w10YGzQiG3hmhiQkY6qyHOUKMo99wI92D8PD3pdp9oBpiIuy6BsdDaxJ', 'AWSALBCORS': 'VoYjBMv+U++p2jdo7XIC2oElP33QWBp8UaO+RydS5LApyPCqSGbhTcfFwXMqH7tP+em/w10YGzQiG3hmhiQkY6qyHOUKMo99wI92D8PD3pdp9oBpiIuy6BsdDaxJ', 'ci_session': '71465d09bc6e0b1946cddc6a2c697dd2'}
-2026-04-02 16:27:01 INFO: sid 來源: not_found
-2026-04-02 16:27:01 WARNING: 未取得 sid，將改用 session cookie/無 sid 模式嘗試下載
-2026-04-02 16:27:01 WARNING: 目前 cookies: {'AWSALB': 'VoYjBMv+U++p2jdo7XIC2oElP33QWBp8UaO+RydS5LApyPCqSGbhTcfFwXMqH7tP+em/w10YGzQiG3hmhiQkY6qyHOUKMo99wI92D8PD3pdp9oBpiIuy6BsdDaxJ', 'AWSALBCORS': 'VoYjBMv+U++p2jdo7XIC2oElP33QWBp8UaO+RydS5LApyPCqSGbhTcfFwXMqH7tP+em/w10YGzQiG3hmhiQkY6qyHOUKMo99wI92D8PD3pdp9oBpiIuy6BsdDaxJ', 'ci_session': '71465d09bc6e0b1946cddc6a2c697dd2'}
-2026-04-02 16:27:01 ERROR: 首頁前 300 字元: <!DOCTYPE html>
+2026-04-03 00:43:45 INFO: 取得 JMA 首頁 以 獲取 sid / ci_session
+2026-04-03 00:43:45 DEBUG: Starting new HTTPS connection (1): www.data.jma.go.jp:443
+2026-04-03 00:43:46 DEBUG: https://www.data.jma.go.jp:443 "GET /risk/obsdl/ HTTP/1.1" 200 None
+2026-04-03 00:43:46 DEBUG: JMA 首頁狀態碼: 200, 長度: 15859
+2026-04-03 00:43:46 INFO: 首頁 cookies: {'AWSALB': '0fxjpPWrIqIB6ghCULegiQ8kgDsn7+IA412AffqZkhJWKjj5PcUk1SK9IJwpHCQLCP3ny2+zZLiG3dMT7gT5fiFA6yiKF89mBpwnPOrEZ6dn4kdhRzKXU/QT55G/', 'AWSALBCORS': '0fxjpPWrIqIB6ghCULegiQ8kgDsn7+IA412AffqZkhJWKjj5PcUk1SK9IJwpHCQLCP3ny2+zZLiG3dMT7gT5fiFA6yiKF89mBpwnPOrEZ6dn4kdhRzKXU/QT55G/', 'ci_session': '0fde901db4628d4d1e762f0748960afd'}
+2026-04-03 00:43:46 INFO: sid 來源: not_found
+2026-04-03 00:43:46 WARNING: 未取得 sid，將改用 session cookie/無 sid 模式嘗試下載
+2026-04-03 00:43:46 WARNING: 目前 cookies: {'AWSALB': '0fxjpPWrIqIB6ghCULegiQ8kgDsn7+IA412AffqZkhJWKjj5PcUk1SK9IJwpHCQLCP3ny2+zZLiG3dMT7gT5fiFA6yiKF89mBpwnPOrEZ6dn4kdhRzKXU/QT55G/', 'AWSALBCORS': '0fxjpPWrIqIB6ghCULegiQ8kgDsn7+IA412AffqZkhJWKjj5PcUk1SK9IJwpHCQLCP3ny2+zZLiG3dMT7gT5fiFA6yiKF89mBpwnPOrEZ6dn4kdhRzKXU/QT55G/', 'ci_session': '0fde901db4628d4d1e762f0748960afd'}
+2026-04-03 00:43:46 ERROR: 首頁前 300 字元: <!DOCTYPE html>
 <html xml:lang="ja" lang="ja">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <title>気象庁|過去の気象データ・ダウンロード</title>
         <meta name="Author" content="気象庁 Japan M
-2026-04-02 16:27:01 WARNING: DEBUG 抽樣模式啟用：本次僅處理 4 個站點 -> ['a1051', 'a1054', 'a1203', 's47584']
-2026-04-02 16:27:01 INFO: [a1051] 檢查 2026-4，目標檔案: ./weather_data/a1051/2026-4.csv.gz
-2026-04-02 16:27:01 INFO: a1051 2026-4 尚無本地檔案，將下載
-2026-04-02 16:27:01 INFO: 開始下載 a1051 2026-4
-2026-04-02 16:27:01 INFO: a1051 查詢區間: 2026/3/1 -> 2026/4/1
-2026-04-02 16:27:03 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 16:27:03 DEBUG: a1051 2026-4 POST 狀態碼: 200, bytes=97168
-2026-04-02 16:27:03 DEBUG: a1051 解碼: cp932
-2026-04-02 16:27:03 INFO: a1051 2026-4 下載 成功
-2026-04-02 16:27:03 INFO: [a1051] 檢查 2026-3，目標檔案: ./weather_data/a1051/2026-3.csv.gz
-2026-04-02 16:27:03 INFO: 找到 ./weather_data/a1051/2026-3.csv.gz
-2026-04-02 16:27:03 INFO: a1051 2026-3 24H 內已更新，跳過
-2026-04-02 16:27:03 INFO: [a1054] 檢查 2026-4，目標檔案: ./weather_data/a1054/2026-4.csv.gz
-2026-04-02 16:27:03 INFO: a1054 2026-4 尚無本地檔案，將下載
-2026-04-02 16:27:03 INFO: 開始下載 a1054 2026-4
-2026-04-02 16:27:03 INFO: a1054 查詢區間: 2026/3/1 -> 2026/4/1
-2026-04-02 16:27:04 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 16:27:04 DEBUG: a1054 2026-4 POST 狀態碼: 200, bytes=96440
-2026-04-02 16:27:04 DEBUG: a1054 解碼: cp932
-2026-04-02 16:27:04 INFO: a1054 2026-4 下載 成功
-2026-04-02 16:27:04 INFO: [a1054] 檢查 2026-3，目標檔案: ./weather_data/a1054/2026-3.csv.gz
-2026-04-02 16:27:04 INFO: 找到 ./weather_data/a1054/2026-3.csv.gz
-2026-04-02 16:27:04 INFO: a1054 2026-3 24H 內已更新，跳過
-2026-04-02 16:27:04 INFO: [a1203] 檢查 2026-4，目標檔案: ./weather_data/a1203/2026-4.csv.gz
-2026-04-02 16:27:04 INFO: a1203 2026-4 尚無本地檔案，將下載
-2026-04-02 16:27:04 INFO: 開始下載 a1203 2026-4
-2026-04-02 16:27:04 INFO: a1203 查詢區間: 2026/3/1 -> 2026/4/1
-2026-04-02 16:27:06 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 16:27:06 DEBUG: a1203 2026-4 POST 狀態碼: 200, bytes=96646
-2026-04-02 16:27:06 DEBUG: a1203 解碼: cp932
-2026-04-02 16:27:06 INFO: a1203 2026-4 下載 成功
-2026-04-02 16:27:06 INFO: [a1203] 檢查 2026-3，目標檔案: ./weather_data/a1203/2026-3.csv.gz
-2026-04-02 16:27:06 INFO: 找到 ./weather_data/a1203/2026-3.csv.gz
-2026-04-02 16:27:06 INFO: a1203 2026-3 24H 內已更新，跳過
-2026-04-02 16:27:06 INFO: [s47584] 檢查 2026-4，目標檔案: ./weather_data/s47584/2026-4.csv.gz
-2026-04-02 16:27:06 INFO: s47584 2026-4 尚無本地檔案，將下載
-2026-04-02 16:27:06 INFO: 開始下載 s47584 2026-4
-2026-04-02 16:27:06 INFO: s47584 查詢區間: 2026/3/1 -> 2026/4/1
-2026-04-02 16:27:07 DEBUG: https://www.data.jma.go.jp:443 "POST /risk/obsdl/show/table HTTP/1.1" 200 None
-2026-04-02 16:27:08 DEBUG: s47584 2026-4 POST 狀態碼: 200, bytes=115933
-2026-04-02 16:27:08 DEBUG: s47584 解碼: cp932
-2026-04-02 16:27:08 INFO: s47584 2026-4 下載 成功
-2026-04-02 16:27:08 INFO: [s47584] 檢查 2026-3，目標檔案: ./weather_data/s47584/2026-3.csv.gz
-2026-04-02 16:27:08 INFO: 找到 ./weather_data/s47584/2026-3.csv.gz
-2026-04-02 16:27:08 INFO: s47584 2026-3 24H 內已更新，跳過
+2026-04-03 00:43:46 WARNING: DEBUG 抽樣模式啟用：本次僅處理 4 個站點 -> ['a1051', 'a1054', 'a1203', 's47584']
+2026-04-03 00:43:46 INFO: [a1051] 檢查 2026-4，目標檔案: ./weather_data/a1051/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/a1051/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: a1051 2026-4 24H 內已更新，跳過
+2026-04-03 00:43:46 INFO: [a1051] 檢查 2026-3，目標檔案: ./weather_data/a1051/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/a1051/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: a1051 2026-3 24H 內已更新，跳過
+2026-04-03 00:43:46 INFO: [a1054] 檢查 2026-4，目標檔案: ./weather_data/a1054/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/a1054/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: a1054 2026-4 24H 內已更新，跳過
+2026-04-03 00:43:46 INFO: [a1054] 檢查 2026-3，目標檔案: ./weather_data/a1054/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/a1054/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: a1054 2026-3 24H 內已更新，跳過
+2026-04-03 00:43:46 INFO: [a1203] 檢查 2026-4，目標檔案: ./weather_data/a1203/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/a1203/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: a1203 2026-4 24H 內已更新，跳過
+2026-04-03 00:43:46 INFO: [a1203] 檢查 2026-3，目標檔案: ./weather_data/a1203/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/a1203/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: a1203 2026-3 24H 內已更新，跳過
+2026-04-03 00:43:46 INFO: [s47584] 檢查 2026-4，目標檔案: ./weather_data/s47584/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/s47584/2026-4.csv.gz
+2026-04-03 00:43:46 INFO: s47584 2026-4 24H 內已更新，跳過
+2026-04-03 00:43:46 INFO: [s47584] 檢查 2026-3，目標檔案: ./weather_data/s47584/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: 找到 ./weather_data/s47584/2026-3.csv.gz
+2026-04-03 00:43:46 INFO: s47584 2026-3 24H 內已更新，跳過
