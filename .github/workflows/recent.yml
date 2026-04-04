@@ -2,65 +2,62 @@ name: recent_update
 
 on:
   schedule:
-    - cron: "0 0,8,16 * * *"
+    - cron: '0 0,8,16 * * *'
   workflow_dispatch:
     inputs:
       log_level:
-        description: "AMeDAS log level"
+        description: 'AMeDAS log level'
         required: false
-        default: "DEBUG"
+        default: 'INFO'
         type: choice
         options:
-          - DEBUG
           - INFO
+          - DEBUG
           - WARNING
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     env:
-      PYTHONUNBUFFERED: "1"
-      AMEDAS_LOG_LEVEL: ${{ github.event.inputs.log_level || 'DEBUG' }}
-      AMEDAS_SAMPLE_ONLY: "1"
-      AMEDAS_SAMPLE_STATIONS: "a1051,a1054,a1203,s47584"
-      AMEDAS_SAMPLE_LIMIT: "4"
-      AMEDAS_SAVE_HTTP_DUMP: "1"
-      AMEDAS_HTTP_DUMP_DIR: "debug_http"
+      PYTHONUNBUFFERED: '1'
+      AMEDAS_LOG_LEVEL: ${{ github.event.inputs.log_level || 'INFO' }}
+      AMEDAS_SAMPLE_ONLY: '0'
+      AMEDAS_BATCH_SIZE: '3'
+      AMEDAS_TIME_LIMIT_MINUTES: '330'
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: exec AMeDAS_parser
-      run: |
-        python AMeDAS_parser_recent.py 2>&1 | tee amedas_recent.log
-    - name: Upload debug log
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: amedas-recent-log
-        path: amedas_recent.log
-    - name: Upload HTTP traces
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: amedas-recent-http-dump
-        path: debug_http
-    - name: Commit files
-      continue-on-error: true
-      run: |
-        git config --global user.email "allenstorm2005@gmail.com"
-        git config --global user.name "Raingel(Github Action)"
-        git add .
-        git commit -m "`date '+%Y-%m-%d %H:%M:%S'`"
-        git pull --rebase
-    - name: Push changes
-      continue-on-error: true
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: main
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run recent refresh
+        run: |
+          python AMeDAS_parser_recent.py 2>&1 | tee amedas_recent.log
+      - name: Upload log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: amedas-recent-log
+          path: amedas_recent.log
+      - name: Commit and push changes
+        run: |
+          git config user.email 'allenstorm2005@gmail.com'
+          git config user.name 'Raingel(GitHub Action)'
+          git add weather_data
+          if git diff --cached --quiet; then
+            echo 'No changes to commit'
+            exit 0
+          fi
+          git commit -m "recent update $(date '+%Y-%m-%d %H:%M:%S')"
+          git pull --rebase origin main
+          git push origin HEAD:main
